@@ -1,0 +1,38 @@
+        <div class="page-header">
+            <h3>
+                <a ng-show="post.link" ng-href="{{post.link}}">
+                    {{post.title}}
+                </a>
+                <span ng-hide="post.link">
+                    {{post.title}}
+                </span>
+            </h3>
+        </div>
+		<div ng-repeat="comment in post.comments | orderBy: '-votes'">
+            <span class="glyphicon glyphicon-thumbs-up"
+                ng-click="incrementUpvotes(comment)"></span>
+            <span class="glyphicon glyphicon-thumbs-down"
+                ng-click="decrementUpvotes(comment)"></span>
+
+            Votos = {{comment.upvotes}}
+
+            - by {{comment.author}}
+            <span style="font-size:20px;margin-left:10px">
+                Mensaje: {{comment.body}}
+            </span>
+        </div>
+        <div ng-hide="isLoggedIn()">
+		  <h3>Necesita hacer <a href="/#/login">Log In</a> o <a href="/#/register">Registrarse</a> Antes de hacer un comentario</h3>
+		</div>
+        <form ng-submit="addComment()"  ng-show="isLoggedIn()" style="margin-top:30px">
+            <h3>Add a new comment</h3>
+            <div class="form-group">
+                <input type="text"
+                    class="form-control"
+                    placeholder="Comment"
+                    ng-model="body">
+            </div>
+            <button type="submit" class="btn btn-primary">Post to {{post.title}}</button>
+            <a class="btn btn-primary" href="#/home">Volver</a>
+
+        </form>
