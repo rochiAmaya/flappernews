@@ -1,8 +1,10 @@
 var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
-var Post = mongoose.model('Post');
-var Comment = mongoose.model('Comment');
+//var Post = mongoose.model('Post');
+//var Comment = mongoose.model('Comment');
+var Idea = mongoose.model('Idea');
+var Tip = mongoose.model('Tip');
 var passport = require('passport');
 var User = mongoose.model('User');
 var jwt = require('express-jwt');
@@ -10,8 +12,15 @@ var auth = jwt({secret: 'SECRET', userProperty: 'payload'});
 
 
 
+/* GET home page. */
+router.get('/', function(req, res, next) {
+    res.render('index', { title: 'Express' });
+});
+
+
+
 /*hace que los post sean por id*/
-router.param('post', function(req, res, next, id) {
+/*router.param('post', function(req, res, next, id) {
   var query = Post.findById(id);
 
   query.exec(function (err, post){
@@ -24,13 +33,7 @@ router.param('post', function(req, res, next, id) {
 });
 
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
-
-
-/*listado de posts*/
+/!*listado de posts*!/
 router.get('/posts', function(req, res, next) {
   Post.find(function(err, posts){
     if(err){ return next(err); }
@@ -39,7 +42,7 @@ router.get('/posts', function(req, res, next) {
   });
 });
 
-/*dvuelve el post del parametro y l listado de comentarios*/
+/!*dvuelve el post del parametro y l listado de comentarios*!/
 router.get('/posts/:post', function(req, res, next) {
   req.post.populate('comments', function(err, post) {
     if (err) { return next(err); }
@@ -47,7 +50,7 @@ router.get('/posts/:post', function(req, res, next) {
     res.json(post);
   });
 });
-/*dvuelve el comment del parametro*/
+/!*dvuelve el comment del parametro*!/
 router.param('comment', function(req, res, next, id) {
   var query = Comment.findById(id);
 
@@ -60,7 +63,7 @@ router.param('comment', function(req, res, next, id) {
   });
 });
 
-/*inserta un post*/
+/!*inserta un post*!/
 router.post('/posts', auth, function(req, res, next) {
   var post = new Post(req.body);
   post.author = req.payload.username;
@@ -72,7 +75,7 @@ router.post('/posts', auth, function(req, res, next) {
   });
 });
 
-/*aumenta el nro de estrellas*/
+/!*aumenta el nro de estrellas*!/
 //llama al método de upvote de post.js
 router.put('/posts/:post/upvote',  auth,function(req, res, next) {
   req.post.upvote(function(err, post){
@@ -91,7 +94,7 @@ router.put('/posts/:post/downvote',  auth,function(req, res, next) {
 
 
 
-/*comenta un post particular*/
+/!*comenta un post particular*!/
 router.post('/posts/:post/comments',  auth, function(req, res, next) {
   var comment = new Comment(req.body);
   comment.post = req.post;
@@ -125,6 +128,7 @@ router.put('/posts/:post/comments/:comment/downvote',  auth,function(req, res, n
   });
 });
 
+*/
 
 
 /*PARA LOGIN*/
