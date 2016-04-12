@@ -1,8 +1,6 @@
 var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
-//var Post = mongoose.model('Post');
-//var Comment = mongoose.model('Comment');
 var Idea = mongoose.model('Idea');
 var Tip = mongoose.model('Tip');
 var passport = require('passport');
@@ -20,29 +18,55 @@ router.get('/', function(req, res, next) {
 
 
 /*hace que los post sean por id*/
-/*router.param('post', function(req, res, next, id) {
-  var query = Post.findById(id);
 
-  query.exec(function (err, post){
-    if (err) { return next(err); }
-    if (!post) { return next(new Error('can\'t find post')); }
+router.param('idea', function (req, res, next, id) {
+    var query = Idea.findById(id);
 
-    req.post = post;
-    return next();
-  });
+    query.exec(function (err, post) {
+        if (err) {
+            return next(err);
+        }
+        if (!idea) {
+            return next(new Error('can\'t find post'));
+        }
+
+        req.idea = idea;
+        return next();
+    });
 });
 
 
-/!*listado de posts*!/
-router.get('/posts', function(req, res, next) {
-  Post.find(function(err, posts){
-    if(err){ return next(err); }
+/*listado de ideas*/
+router.get('/ideas', function (req, res, next) {
+    Idea.find(function (err, ideas) {
+        if (err) {
+            return next(err);
+        }
 
-    res.json(posts);
-  });
+        res.json(ideas);
+    });
 });
 
-/!*dvuelve el post del parametro y l listado de comentarios*!/
+
+/*inserta una idea*/
+router.post('/ideas', auth, function (req, res, next) {
+    var idea = new Idea(req.body);
+    idea.author = req.payload.username;
+
+    idea.save(function (err, post) {
+        if (err) {
+            return next(err);
+        }
+
+        res.json(post);
+    });
+});
+
+/*
+
+
+
+ /!*dvuelve el post del parametro y l listado de comentarios*!/
 router.get('/posts/:post', function(req, res, next) {
   req.post.populate('comments', function(err, post) {
     if (err) { return next(err); }
