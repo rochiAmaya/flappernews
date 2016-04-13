@@ -19,6 +19,7 @@ app.factory('ideas', ['$http', 'auth', function($http, auth){
         });
     };
 
+
     ideasfactory.get = function (id) {
         return $http.get('/ideas/' + id).then(function (res) {
             return res.data;
@@ -28,15 +29,18 @@ app.factory('ideas', ['$http', 'auth', function($http, auth){
     ideasfactory.eliminar = function (id) {
         //TODO
     };
+
+
+    return ideasfactory;
 }]);
 
 
-app.controller('IdeasCtrl', ['$scope', '$stateParams', 'ideas', 'idea', 'auth',
-    function ($scope, $stateParams, ideas, idea, auth) {
+app.controller('IdeasCtrl', ['$scope', '$stateParams', 'ideas', 'auth',
+    function ($scope, $stateParams, ideas, auth) {
 
-        $scope.idea = idea;
+        $scope.ideas = ideas.ideas;
 
-        $scope.isLoggedIn = auth.isLoggedIn;
+        $scope.isLoggedIn = auth.isLoggedIn();
 
 
         $scope.predicate = 'titulo';
@@ -53,6 +57,32 @@ app.controller('IdeasCtrl', ['$scope', '$stateParams', 'ideas', 'idea', 'auth',
         $scope.eliminarIdea = function (id) {
             ideas.eliminarIdea(id)
         }
+
+
+    }]);
+
+
+app.controller('IdeaCtrl', ['$scope', '$stateParams', 'ideas', 'auth',
+    function ($scope, $stateParams, ideas, auth) {
+
+
+        $scope.isLoggedIn = auth.isLoggedIn();
+
+        $scope.addIdea = function () {
+            if (!$scope.titulo || $scope.titulo === '') {
+                return;
+            }
+
+            ideas.create({
+                titulo: $scope.titulo,
+                descripcion: $scope.descripcion
+            });
+            $scope.titulo = '';
+            $scope.descripcion = '';
+
+
+        };
+
 
     }]);
 
