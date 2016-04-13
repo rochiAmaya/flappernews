@@ -50,9 +50,7 @@ router.get('/ideas', function (req, res, next) {
 
 /*inserta una idea*/
 router.post('/ideas', auth, function (req, res, next) {
-    var idea = new Idea();
-    idea.titulo = req.titulo;
-    idea.descripcion = req.descripcion;
+    var idea = new Idea(req.body);
     idea.author = req.payload.username;
 
     idea.save(function (err, post) {
