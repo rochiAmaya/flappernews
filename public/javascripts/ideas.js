@@ -26,10 +26,13 @@ app.factory('ideas', ['$http', 'auth', function($http, auth){
         });
     };
 
-    ideasfactory.eliminar = function (id) {
-        //TODO
+    ideasfactory.eliminar = function (idea) {
+    	return $http.put('/ideas/' + idea._id + '/eliminar', null, {
+			headers: {Authorization: 'Bearer '+auth.getToken()}
+		  }).success(function(data){
+			idea.estado = 'Eliminada';
+		  });
     };
-
 
     return ideasfactory;
 }]);
@@ -54,17 +57,13 @@ app.controller('IdeasCtrl', ['$scope', '$stateParams', 'ideas', 'auth',
             ideas.get(id)
         }
 
-        $scope.eliminarIdea = function (id) {
-            ideas.eliminarIdea(id)
+        $scope.eliminarIdea = function (idea) {
+            ideas.eliminar(idea)
         }
-
-
     }]);
-
 
 app.controller('IdeaCtrl', ['$scope', '$stateParams', 'ideas', 'auth',
     function ($scope, $stateParams, ideas, auth) {
-
 
         $scope.isLoggedIn = auth.isLoggedIn();
 
@@ -79,10 +78,5 @@ app.controller('IdeaCtrl', ['$scope', '$stateParams', 'ideas', 'auth',
             });
             $scope.titulo = '';
             $scope.descripcion = '';
-
-
         };
-
-
     }]);
-

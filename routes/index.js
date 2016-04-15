@@ -22,12 +22,12 @@ router.get('/', function(req, res, next) {
 router.param('idea', function (req, res, next, id) {
     var query = Idea.findById(id);
 
-    query.exec(function (err, post) {
+    query.exec(function (err, idea) {
         if (err) {
             return next(err);
         }
         if (!idea) {
-            return next(new Error('can\'t find post'));
+            return next(new Error('can\'t find idea'));
         }
 
         req.idea = idea;
@@ -52,14 +52,23 @@ router.get('/ideas', function (req, res, next) {
 router.post('/ideas', auth, function (req, res, next) {
     var idea = new Idea(req.body);
     idea.author = req.payload.username;
+    idea.estado = 'Disponible';
 
-    idea.save(function (err, post) {
+    idea.save(function (err, idea) {
         if (err) {
             return next(err);
         }
 
-        res.json(post);
+        res.json(idea);
     });
+}); 
+
+router.put('/ideas/:idea/eliminar', auth, function(req, res, next) {
+  req.idea.eliminar(function(err, idea){
+    if (err) { return next(err); }
+
+    res.json(idea);
+  });
 });
 
 /*
