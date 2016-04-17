@@ -36,11 +36,11 @@ app.factory('ideas', ['$http', 'auth', function($http, auth){
         });
     };
 
-    ideasfactory.eliminar = function (idea) {
+    ideasfactory.eliminar = function (idea, index) {
         return $http.put('/ideas/' + idea._id + '/eliminar', null, {
             headers: {Authorization: 'Bearer ' + auth.getToken()}
         }).success(function (data) {
-            idea.estado = "Eliminado";
+        	ideasfactory.ideas.splice(index, 1);
         });
     };
 
@@ -54,21 +54,20 @@ app.factory('ideas', ['$http', 'auth', function($http, auth){
     };
 
 
-    ideasfactory.aceptarPostulacion = function (idea) {
+    ideasfactory.aceptarPostulacion = function (idea, index) {
         return $http.put('/ideas/' + idea._id + '/aceptarPostulacion', null, {
             headers: {Authorization: 'Bearer ' + auth.getToken()}
         }).success(function (data) {
-            idea.estado = "Aceptada";
+            ideasfactory.ideasPendientes.splice(index, 1);
         });
     };
 
 
-    ideasfactory.rechazarPostulacion = function (idea) {
+    ideasfactory.rechazarPostulacion = function (idea, index) {
         return $http.put('/ideas/' + idea._id + '/rechazarPostulacion', null, {
             headers: {Authorization: 'Bearer ' + auth.getToken()}
         }).success(function (data) {
-            idea.estado = "Disponible";
-            idea.alumno = undefined
+            ideasfactory.ideasPendientes.splice(index, 1);
         });
     };
 
@@ -95,8 +94,12 @@ app.controller('IdeasCtrl', ['$scope', '$stateParams', 'ideas', 'auth', '$state'
             $state.go('ideaDetalle', {idea: id}, {})
         }
 
-        $scope.eliminarIdea = function (idea) {
-            ideas.eliminar(idea)
+        $scope.eliminarIdea = function (idea, index) {
+            ideas.eliminar(idea, index)
+        }
+
+        $scope.postularmeIdea = function (idea) {
+        	ideas.postularme(idea); 
         }
     }]);
 
@@ -160,12 +163,12 @@ app.controller('IdeasPendientesCtrl', ['$scope', '$stateParams', 'ideas', 'auth'
             ideas.eliminar(idea)
         }
 
-        $scope.rechazarPostulacion = function (idea) {
-            ideas.rechazarPostulacion(idea)
+        $scope.rechazarPostulacion = function (idea, index) {
+            ideas.rechazarPostulacion(idea, index)
         }
 
-        $scope.aceptarPostulacion = function (idea) {
-            ideas.aceptarPostulacion(idea)
+        $scope.aceptarPostulacion = function (idea, index) {
+            ideas.aceptarPostulacion(idea, index)
         }
 
 

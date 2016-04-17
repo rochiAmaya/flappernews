@@ -22,11 +22,11 @@ router.get('/', function(req, res, next) {
 
 router.param('idea', function (req, res, next, id) {
 
-    console.log("pase por el param" + req)
+    console.log(" *** Pase por el param" + req + " *** ")
 
     var query = Idea.findById(id);
 
-    console.log("encontre" + query)
+    console.log(" *** encontre" + query + " *** ")
 
 
     query.exec(function (err, idea) {
@@ -45,7 +45,7 @@ router.param('idea', function (req, res, next, id) {
 
 /*listado de ideas*/
 router.get('/ideas', function (req, res, next) {
-    Idea.find(function (err, ideas) {
+    Idea.find({ 'estado': {'$ne':'Eliminado' }}, function (err, ideas) {
         if (err) {
             return next(err);
         }
@@ -57,7 +57,7 @@ router.get('/ideas', function (req, res, next) {
 
 /*listado de ideas pendientes*/
 router.get('/ideasPendientes', function (req, res, next) {
-    Idea.find(function (err, ideas) {
+    Idea.find({ 'estado': 'En Revisión'}, function (err, ideas) {
         if (err) {
             return next(err);
         }
@@ -73,6 +73,8 @@ router.post('/ideas', auth, function (req, res, next) {
     idea.author = req.payload.username;
     idea.estado = 'Disponible';
 
+    console.log(" *** Se creo la idea " + idea.titulo + " *** ")
+
     idea.save(function (err, idea) {
         if (err) {
             return next(err);
@@ -84,7 +86,7 @@ router.post('/ideas', auth, function (req, res, next) {
 
 router.put('/ideas/:idea/eliminar', auth, function (req, res, next) {
     req.idea.estadoEliminado(function (err, post) {
-        console.log("Pase por eliminar")
+        console.log(" *** Se elimino la idea " + req.idea._id + " *** ")
         if (err) {
             return next(err);
         }
@@ -93,10 +95,21 @@ router.put('/ideas/:idea/eliminar', auth, function (req, res, next) {
     });
 });
 
+router.put('/ideas/:idea/postularme', auth, function (req, res, next) {
+    req.idea.estadoRevision( req.payload.username, function (err, idea) {
+        console.log(" *** El alumno " + req.payload.username + " se postulo para la idea " + req.idea._id + " *** ")
+        if (err) {
+            return next(err);
+        }
+
+        res.json(idea);
+    });
+});
+
 
 router.put('/ideas/:idea/aceptarPostulacion', auth, function (req, res, next) {
     req.idea.estadoAceptada(function (err, post) {
-        console.log("Pase por aceptarPostulacion")
+        console.log(" *** Se acepto la postulación para la idea " + req.idea._id + " *** ")
         if (err) {
             return next(err);
         }
@@ -108,7 +121,7 @@ router.put('/ideas/:idea/aceptarPostulacion', auth, function (req, res, next) {
 
 router.put('/ideas/:idea/rechazarPostulacion', auth, function (req, res, next) {
     req.idea.estadoRechazarPostulacion(function (err, post) {
-        console.log("Pase por rechazarPostulacion")
+        console.log(" *** Se rechazo la postulación para la idea " + req.idea._id + " *** ")
         if (err) {
             return next(err);
         }

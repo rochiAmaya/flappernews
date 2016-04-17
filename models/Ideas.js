@@ -17,9 +17,9 @@ IdeaSchema.methods.estadoEliminado = function (cb) {
     this.save(cb);
 };
 
-IdeaSchema.methods.estadoRevision = function (cb) {
+IdeaSchema.methods.estadoRevision = function (usuario, cb) {
     this.estado = "En Revisión";
-
+    this.alumno = usuario; 
     this.save(cb);
 };
 

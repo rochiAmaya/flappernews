@@ -39,7 +39,7 @@
                         <button ng-disabled="!isLoggedIn" ng-show="idea.estado == 'En Revisión'" type="button"
                                 class="btn btn-default"
                                 title="Rechazar Postulado"
-                                aria-label="Rechazar" ng-click="rechazarPostulacion(idea)">
+                                aria-label="Rechazar" ng-click="rechazarPostulacion(idea, $index)">
                             <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                         </button>
 
@@ -47,7 +47,7 @@
                         <button ng-disabled="!isLoggedIn" ng-show="idea.estado == 'En Revisión'" type="button"
                                 class="btn btn-default"
                                 title="Aceptar Postulado"
-                                aria-label="Aceptar" ng-click="aceptarPostulacion(idea)">
+                                aria-label="Aceptar" ng-click="aceptarPostulacion(idea, $index)">
                             <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                         </button>
 

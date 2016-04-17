@@ -35,14 +35,14 @@
 
                         <button ng-disabled="!isLoggedIn" type="button" class="btn btn-default"
                                 title="Eliminar idea"
-                                aria-label="Eliminar idea" ng-click="eliminarIdea(idea)">
+                                aria-label="Eliminar idea" ng-click="eliminarIdea(idea, $index)">
                             <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                         </button>
 
                         <button ng-disabled="!isLoggedIn" ng-show="idea.estado == 'Disponible'" type="button"
                                 class="btn btn-default"
                                 title="Postularme"
-                                aria-label="Postularme" ng-click="postularmeIdea(idea)">
+                                aria-label="Postularme" ng-click="postularmeIdea(idea, $index)">
                             <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
                         </button>
 
