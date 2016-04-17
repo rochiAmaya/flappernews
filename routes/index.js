@@ -55,6 +55,18 @@ router.get('/ideas', function (req, res, next) {
 });
 
 
+/*listado de ideas pendientes*/
+router.get('/ideasPendientes', function (req, res, next) {
+    Idea.find(function (err, ideas) {
+        if (err) {
+            return next(err);
+        }
+
+        res.json(ideas);
+    });
+});
+
+
 /*inserta una idea*/
 router.post('/ideas', auth, function (req, res, next) {
     var idea = new Idea(req.body);

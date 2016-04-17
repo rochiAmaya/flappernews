@@ -1,7 +1,8 @@
 app.factory('ideas', ['$http', 'auth', function($http, auth){
     var ideasfactory = {
         ideas: [],
-        ideaDetalle: {}
+        ideaDetalle: {},
+        ideasPendientes: []
 	};
 
 
@@ -9,6 +10,14 @@ app.factory('ideas', ['$http', 'auth', function($http, auth){
         return $http.get('/ideas')
             .success(function (data) {
                 angular.copy(data, ideasfactory.ideas);
+            });
+    };
+
+
+    ideasfactory.getAllPendientes = function () {
+        return $http.get('/ideasPendientes')
+            .success(function (data) {
+                angular.copy(data, ideasfactory.ideasPendientes);
             });
     };
 
@@ -105,6 +114,37 @@ app.controller('VerIdeaCtrl', ['$scope', '$stateParams', 'ideas', 'auth',
 
 
     }]);
+
+
+app.controller('IdeasPendientesCtrl', ['$scope', '$stateParams', 'ideas', 'auth',
+    function ($scope, $stateParams, ideas, auth) {
+
+
+        $scope.ideasPendientes = ideas.ideasPendientes;
+
+        $scope.isLoggedIn = auth.isLoggedIn();
+
+
+        $scope.predicate = 'titulo';
+        $scope.reverse = true;
+        $scope.order = function (predicate) {
+            $scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
+            $scope.predicate = predicate;
+        };
+
+        $scope.verIdea = function (id) {
+            $state.go('ideaDetalle', {idea: id}, {})
+        }
+
+        $scope.eliminarIdea = function (idea) {
+            ideas.eliminar(idea)
+        }
+
+
+    }]);
+
+
+
 
 
 

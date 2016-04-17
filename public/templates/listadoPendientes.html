@@ -18,13 +18,17 @@
                         </button>
                     </th>
                     <th>Estado</th>
+                    <th>Alumno Postulado</th>
                     <th></th>
 
                 </tr>
-                <tr ng-repeat="idea in ideas | orderBy:predicate:reverse">
+                <tr ng-repeat="idea in ideasPendientes | orderBy:predicate:reverse">
                     <th>{{idea.titulo}}</th>
                     <th>{{idea.author}}</th>
                     <th>{{idea.estado}}</th>
+                    <th>{{idea.alumno}}</th>
+
+
                     <th>
                         <button ng-disabled="!isLoggedIn" type="button" class="btn btn-default" aria-label="Ver idea"
                                 title="Ver idea"
@@ -32,19 +36,21 @@
                             <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                         </button>
 
-
-                        <button ng-disabled="!isLoggedIn" type="button" class="btn btn-default"
-                                title="Eliminar idea"
-                                aria-label="Eliminar idea" ng-click="eliminarIdea(idea)">
-                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                        </button>
-
-                        <button ng-disabled="!isLoggedIn" ng-show="idea.estado == 'Disponible'" type="button"
+                        <button ng-disabled="!isLoggedIn" ng-show="idea.estado == 'En Revisión'" type="button"
                                 class="btn btn-default"
-                                title="Postularme"
-                                aria-label="Postularme" ng-click="postularmeIdea(idea)">
-                            <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                                title="Rechazar Postulado"
+                                aria-label="Rechazar" ng-click="rechazarPostulacion(idea)">
+                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                         </button>
+
+
+                        <button ng-disabled="!isLoggedIn" ng-show="idea.estado == 'En Revisión'" type="button"
+                                class="btn btn-default"
+                                title="Aceptar Postulado"
+                                aria-label="Aceptar" ng-click="aceptarPostulacion(idea)">
+                            <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                        </button>
+
 
                     </th>
                 </tr>

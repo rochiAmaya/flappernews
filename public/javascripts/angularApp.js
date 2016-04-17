@@ -61,6 +61,17 @@ function($stateProvider, $urlRouterProvider) {
           }
       })
 
+      .state('ideasPendientes', {
+          url: '/ideasPendientes',
+          templateUrl: '/templates/listadoPendientes.html',
+          controller: 'IdeasPendientesCtrl'
+          , resolve: {
+              postPromise: ['ideas', function (ideas) {
+                  return ideas.getAllPendientes();
+              }]
+          }
+      })
+
 
   ;
 
