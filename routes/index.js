@@ -3,6 +3,7 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var Idea = mongoose.model('Idea');
 var Tip = mongoose.model('Tip');
+var Materia = mongoose.model('Materia');
 var passport = require('passport');
 var User = mongoose.model('User');
 var jwt = require('express-jwt');
@@ -25,7 +26,7 @@ router.param('idea', function (req, res, next, id) {
 
     var query = Idea.findById(id);
 
-    console.log("e ncontre" + query)
+    console.log("encontre" + query)
 
 
     query.exec(function (err, idea) {
@@ -68,15 +69,6 @@ router.post('/ideas', auth, function (req, res, next) {
         res.json(idea);
     });
 });
-
-/*router.put('/ideas/:idea/eliminar', auth, function(req, res, next) {
-  req.idea.eliminar(function(err, idea){
-    if (err) { return next(err); }
-
-    res.json(idea);
-  });
- });*/
-
 
 router.put('/ideas/:idea/eliminar', auth, function (req, res, next) {
     req.idea.estadoEliminado(function (err, post) {

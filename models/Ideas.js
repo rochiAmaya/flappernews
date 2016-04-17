@@ -1,11 +1,14 @@
-var mongoose = require('mongoose');
+var mongoose = require('mongoose'), Schema = mongoose.Schema;
 
 var IdeaSchema = new mongoose.Schema({
     titulo: String,
     descripcion: String,
     author: String,
-    estado: String
+    estado: String,
+    alumno: String,
     /*TODO materias y tags*/
+    materias: [{type: Schema.Types.ObjectId, ref: 'Materia'}],
+    tags: [{type: String}]
 });
 
 /*Metodos de modificacion de estados*/

@@ -35,6 +35,15 @@ app.factory('ideas', ['$http', 'auth', function($http, auth){
         });
     };
 
+
+    ideasfactory.postularme = function (idea) {
+        return $http.put('/ideas/' + idea._id + '/postularme', null, {
+            headers: {Authorization: 'Bearer ' + auth.getToken()}
+        }).success(function (data) {
+            idea.estado = "En Revisión";
+        });
+    };
+
     return ideasfactory;
 }]);
 
