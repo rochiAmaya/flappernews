@@ -53,6 +53,25 @@ app.factory('ideas', ['$http', 'auth', function($http, auth){
         });
     };
 
+
+    ideasfactory.aceptarPostulacion = function (idea) {
+        return $http.put('/ideas/' + idea._id + '/aceptarPostulacion', null, {
+            headers: {Authorization: 'Bearer ' + auth.getToken()}
+        }).success(function (data) {
+            idea.estado = "Aceptada";
+        });
+    };
+
+
+    ideasfactory.rechazarPostulacion = function (idea) {
+        return $http.put('/ideas/' + idea._id + '/rechazarPostulacion', null, {
+            headers: {Authorization: 'Bearer ' + auth.getToken()}
+        }).success(function (data) {
+            idea.estado = "Disponible";
+            idea.alumno = undefined
+        });
+    };
+
     return ideasfactory;
 }]);
 
@@ -138,6 +157,14 @@ app.controller('IdeasPendientesCtrl', ['$scope', '$stateParams', 'ideas', 'auth'
 
         $scope.eliminarIdea = function (idea) {
             ideas.eliminar(idea)
+        }
+
+        $scope.rechazarPostulacion = function (idea) {
+            ideas.rechazarPostulacion(idea)
+        }
+
+        $scope.aceptarPostulacion = function (idea) {
+            ideas.aceptarPostulacion(idea)
         }
 
 

@@ -94,6 +94,32 @@ router.put('/ideas/:idea/eliminar', auth, function (req, res, next) {
 });
 
 
+router.put('/ideas/:idea/aceptarPostulacion', auth, function (req, res, next) {
+    req.idea.estadoAceptada(function (err, post) {
+        console.log("Pase por aceptarPostulacion")
+        if (err) {
+            return next(err);
+        }
+
+        res.json(post);
+    });
+});
+
+
+router.put('/ideas/:idea/rechazarPostulacion', auth, function (req, res, next) {
+    req.idea.estadoRechazarPostulacion(function (err, post) {
+        console.log("Pase por rechazarPostulacion")
+        if (err) {
+            return next(err);
+        }
+
+        res.json(post);
+    });
+});
+
+
+
+
 router.get('/ideas/:idea', function (req, res, next) {
     res.json(req.idea);
 });

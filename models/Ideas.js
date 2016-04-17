@@ -33,4 +33,10 @@ IdeaSchema.methods.estadoRechazada = function (cb) {
     this.save(cb);
 };
 
+
+IdeaSchema.methods.estadoRechazarPostulacion = function (cb) {
+    this.estado = "Disponible";
+    this.alumno = undefined;
+    this.save(cb);
+};
 mongoose.model('Idea', IdeaSchema);
