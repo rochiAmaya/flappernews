@@ -127,6 +127,7 @@ app.controller('VerIdeaCtrl', ['$scope', '$stateParams', 'ideas', 'auth',
         $scope.descripcion = ideas.ideaDetalle.descripcion;
         $scope.author = ideas.ideaDetalle.author;
         $scope.estado = ideas.ideaDetalle.estado;
+        $scope.alumno = ideas.ideaDetalle.alumno;
 
 
         $scope.isLoggedIn = auth.isLoggedIn();
