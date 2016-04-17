@@ -28,11 +28,11 @@ app.factory('ideas', ['$http', 'auth', function($http, auth){
     };
 
     ideasfactory.eliminar = function (idea) {
-    	return $http.put('/ideas/' + idea._id + '/eliminar', null, {
-			headers: {Authorization: 'Bearer '+auth.getToken()}
-		  }).success(function(data){
-			idea.estado = 'Eliminada';
-		  });
+        return $http.put('/ideas/' + idea._id + '/eliminar', null, {
+            headers: {Authorization: 'Bearer ' + auth.getToken()}
+        }).success(function (data) {
+            idea.estado = "Eliminado";
+        });
     };
 
     return ideasfactory;

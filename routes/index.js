@@ -79,7 +79,7 @@ router.post('/ideas', auth, function (req, res, next) {
 
 
 router.put('/ideas/:idea/eliminar', auth, function (req, res, next) {
-    req.post.estadoEliminado(function (err, post) {
+    req.idea.estadoEliminado(function (err, post) {
         console.log("Pase por eliminar")
         if (err) {
             return next(err);
