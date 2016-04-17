@@ -49,7 +49,20 @@ function($stateProvider, $urlRouterProvider) {
           templateUrl: '/templates/newIdea.html',
           controller: 'IdeaCtrl'
       })
-	;
+
+      .state('ideaDetalle', {
+          url: '/ideas/:idea',
+          templateUrl: '/templates/verIdea.html',
+          controller: 'VerIdeaCtrl'
+          , resolve: {
+              postPromise: ['ideas', '$stateParams', function (ideas, $stateParams) {
+                  return ideas.get($stateParams.idea)
+              }]
+          }
+      })
+
+
+  ;
 
   $urlRouterProvider.otherwise('home');
 }])

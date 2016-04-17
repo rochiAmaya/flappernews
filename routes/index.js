@@ -20,7 +20,13 @@ router.get('/', function(req, res, next) {
 /*hace que los post sean por id*/
 
 router.param('idea', function (req, res, next, id) {
+
+    console.log("pase por el param" + req)
+
     var query = Idea.findById(id);
+
+    console.log("e ncontre" + query)
+
 
     query.exec(function (err, idea) {
         if (err) {
@@ -61,14 +67,31 @@ router.post('/ideas', auth, function (req, res, next) {
 
         res.json(idea);
     });
-}); 
+});
 
-router.put('/ideas/:idea/eliminar', auth, function(req, res, next) {
+/*router.put('/ideas/:idea/eliminar', auth, function(req, res, next) {
   req.idea.eliminar(function(err, idea){
     if (err) { return next(err); }
 
     res.json(idea);
   });
+ });*/
+
+
+router.put('/ideas/:idea/eliminar', auth, function (req, res, next) {
+    req.post.estadoEliminado(function (err, post) {
+        console.log("Pase por eliminar")
+        if (err) {
+            return next(err);
+        }
+
+        res.json(post);
+    });
+});
+
+
+router.get('/ideas/:idea', function (req, res, next) {
+    res.json(req.idea);
 });
 
 /*

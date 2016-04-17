@@ -17,7 +17,9 @@
                             <i class="icon-sort"></i>
                         </button>
                     </th>
+                    <th>Estado</th>
                     <th></th>
+
                 </tr>
                 <tr ng-repeat="idea in ideas | orderBy:predicate:reverse">
                     <th>{{idea.titulo}}</th>
@@ -25,14 +27,17 @@
                     <th>{{idea.estado}}</th>
                     <th>
                         <button ng-disabled="!isLoggedIn" type="button" class="btn btn-default" aria-label="Ver idea"
-                                ng-click="verIdea(idea.id)">
+                                ng-click="verIdea(idea._id)">
                             <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                         </button>
+
 
                         <button ng-disabled="!isLoggedIn" type="button" class="btn btn-default"
                                 aria-label="Eliminar idea" ng-click="eliminarIdea(idea)">
                             <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                         </button>
+
+
                     </th>
                 </tr>
             </table>

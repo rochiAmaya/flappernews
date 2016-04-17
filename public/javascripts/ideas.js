@@ -1,6 +1,7 @@
 app.factory('ideas', ['$http', 'auth', function($http, auth){
     var ideasfactory = {
-		ideas: []
+        ideas: [],
+        ideaDetalle: {}
 	};
 
 
@@ -22,7 +23,7 @@ app.factory('ideas', ['$http', 'auth', function($http, auth){
 
     ideasfactory.get = function (id) {
         return $http.get('/ideas/' + id).then(function (res) {
-            return res.data;
+            angular.copy(res.data, ideasfactory.ideaDetalle);
         });
     };
 
@@ -38,8 +39,8 @@ app.factory('ideas', ['$http', 'auth', function($http, auth){
 }]);
 
 
-app.controller('IdeasCtrl', ['$scope', '$stateParams', 'ideas', 'auth',
-    function ($scope, $stateParams, ideas, auth) {
+app.controller('IdeasCtrl', ['$scope', '$stateParams', 'ideas', 'auth', '$state',
+    function ($scope, $stateParams, ideas, auth, $state) {
 
         $scope.ideas = ideas.ideas;
 
@@ -54,7 +55,7 @@ app.controller('IdeasCtrl', ['$scope', '$stateParams', 'ideas', 'auth',
         };
 
         $scope.verIdea = function (id) {
-            ideas.get(id)
+            $state.go('ideaDetalle', {idea: id}, {})
         }
 
         $scope.eliminarIdea = function (idea) {
@@ -80,3 +81,21 @@ app.controller('IdeaCtrl', ['$scope', '$stateParams', 'ideas', 'auth',
             $scope.descripcion = '';
         };
     }]);
+
+
+app.controller('VerIdeaCtrl', ['$scope', '$stateParams', 'ideas', 'auth',
+    function ($scope, $stateParams, ideas, auth) {
+
+        $scope.titulo = ideas.ideaDetalle.titulo;
+        $scope.descripcion = ideas.ideaDetalle.descripcion;
+        $scope.author = ideas.ideaDetalle.author;
+        $scope.estado = ideas.ideaDetalle.estado;
+
+
+        $scope.isLoggedIn = auth.isLoggedIn();
+
+
+    }]);
+
+
+
