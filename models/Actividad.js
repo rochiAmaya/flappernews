@@ -1,7 +1,9 @@
 var mongoose = require('mongoose'), Schema = mongoose.Schema;
 
 var ActividadSchema = new mongoose.Schema({
-    descripcion: String
+    descripcion: String, 
+    fecha: Date,
+    usuario: String
 });
 
 mongoose.model('Actividad', ActividadSchema);
