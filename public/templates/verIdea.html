@@ -1,0 +1,64 @@
+<div class="container">
+
+    <div class="col-xs-6 col-lg-5">
+        <div ng-hide="isLoggedIn">
+            <h3>Necesita hacer <a href="/#/login">Log In</a> o <a href="/#/register">Registrarse</a> Antes de crear una
+                idea</h3>
+        </div>
+        <h3>Detalle Idea</h3>
+        <div class="form-group">
+            <label>Título</label>
+            <input type="text"
+                   class="form-control"
+                   placeholder="titulo"
+                   ng-model="titulo"
+                   ng-disabled="true">
+        </div>
+
+        <div class="form-group">
+            <label>Descripción</label>
+
+            <input type="text"
+                   class="form-control"
+                   placeholder="Descripción"
+                   ng-model="descripcion"
+                   ng-disabled="true">
+        </div>
+
+        <div class="form-group">
+            <label>Autor</label>
+
+            <input type="text"
+                   class="form-control"
+                   placeholder="Autor"
+                   ng-model="author"
+                   ng-disabled="true">
+        </div>
+
+        <div class="form-group">
+            <label>Estado</label>
+
+            <input type="text"
+                   class="form-control"
+                   placeholder="Estado"
+                   ng-model="estado"
+                   ng-disabled="true">
+        </div>
+
+
+        <div class="form-group">
+            <label>Alumno postulado</label>
+
+            <input type="text"
+                   class="form-control"
+                   placeholder="Alumno"
+                   ng-model="alumno"
+                   ng-disabled="true">
+        </div>
+
+        <a class="btn btn-primary" ui-sref="ideas">Volver</a>
+
+
+    </div>
+
+</div>

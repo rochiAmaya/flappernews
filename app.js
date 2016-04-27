@@ -10,16 +10,16 @@ var bodyParser = require('body-parser');
 
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/news');
-require('./models/Posts');
-require('./models/Comments');
+require('./models/Tips');
+require('./models/Ideas');
 require('./models/Users');
+require('./models/Materia');
 require('./config/passport');
 
 
 var passport = require('passport');
 
 var routes = require('./routes/index');
-var users = require('./routes/users');
 
 var app = express();
 
@@ -38,7 +38,6 @@ app.use(express.static(path.join(__dirname, 'node_modules')));
 app.use(passport.initialize());
 
 app.use('/', routes);
-app.use('/users', users);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

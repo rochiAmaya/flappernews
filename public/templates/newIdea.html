@@ -1,0 +1,31 @@
+<div class="container">
+
+    <div class="col-xs-6 col-lg-5">
+        <div ng-hide="isLoggedIn">
+            <h3>Necesita hacer <a href="/#/login">Log In</a> o <a href="/#/register">Registrarse</a> Antes de crear una
+                idea</h3>
+        </div>
+        <form ng-submit="addIdea()" ng-show="isLoggedIn" style="margin-top:30px">
+            <h3>Crear Idea</h3>
+            <div class="form-group">
+                <input type="text"
+                       class="form-control"
+                       placeholder="Título"
+                       ng-model="titulo">
+            </div>
+
+            <div class="form-group">
+                <input type="text"
+                       class="form-control"
+                       placeholder="Descripción"
+                       ng-model="descripcion">
+            </div>
+
+            <button type="submit" class="btn btn-primary">Crear</button>
+            <a class="btn btn-primary" ui-sref="ideas">Volver</a>
+
+        </form>
+
+    </div>
+
+</div>

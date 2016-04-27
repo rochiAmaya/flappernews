@@ -1,4 +1,4 @@
-var mongoose = require('mongoose');
+/*var mongoose = require('mongoose');
 
 var PostSchema = new mongoose.Schema({
   title: String,
@@ -19,4 +19,4 @@ PostSchema.methods.downvote = function(cb) {
   this.save(cb);
 };
 
-mongoose.model('Post', PostSchema);
+mongoose.model('Post', PostSchema);*/

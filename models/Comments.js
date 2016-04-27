@@ -1,3 +1,4 @@
+/*
 var mongoose = require('mongoose');
 
 var CommentSchema = new mongoose.Schema({
@@ -18,3 +19,4 @@ CommentSchema.methods.downvote = function(cb) {
 }
 
 mongoose.model('Comment', CommentSchema);
+*/

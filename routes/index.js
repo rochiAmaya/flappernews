@@ -1,8 +1,9 @@
 var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
-var Post = mongoose.model('Post');
-var Comment = mongoose.model('Comment');
+var Idea = mongoose.model('Idea');
+var Tip = mongoose.model('Tip');
+var Materia = mongoose.model('Materia');
 var passport = require('passport');
 var User = mongoose.model('User');
 var jwt = require('express-jwt');
@@ -10,36 +11,137 @@ var auth = jwt({secret: 'SECRET', userProperty: 'payload'});
 
 
 
-/*hace que los post sean por id*/
-router.param('post', function(req, res, next, id) {
-  var query = Post.findById(id);
-
-  query.exec(function (err, post){
-    if (err) { return next(err); }
-    if (!post) { return next(new Error('can\'t find post')); }
-
-    req.post = post;
-    return next();
-  });
-});
-
-
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+    res.render('index', { title: 'Express' });
 });
 
 
-/*listado de posts*/
-router.get('/posts', function(req, res, next) {
-  Post.find(function(err, posts){
-    if(err){ return next(err); }
 
-    res.json(posts);
-  });
+/*hace que los post sean por id*/
+
+router.param('idea', function (req, res, next, id) {
+
+    console.log(" *** Pase por el param" + req + " *** ")
+
+    var query = Idea.findById(id);
+
+    console.log(" *** encontre" + query + " *** ")
+
+
+    query.exec(function (err, idea) {
+        if (err) {
+            return next(err);
+        }
+        if (!idea) {
+            return next(new Error('can\'t find idea'));
+        }
+
+        req.idea = idea;
+        return next();
+    });
 });
 
-/*dvuelve el post del parametro y l listado de comentarios*/
+
+/*listado de ideas*/
+router.get('/ideas', function (req, res, next) {
+    Idea.find({ 'estado': {'$ne':'Eliminado' }}, function (err, ideas) {
+        if (err) {
+            return next(err);
+        }
+
+        res.json(ideas);
+    });
+});
+
+
+/*listado de ideas pendientes*/
+router.get('/ideasPendientes', function (req, res, next) {
+    Idea.find({ 'estado': 'En Revisión'}, function (err, ideas) {
+        if (err) {
+            return next(err);
+        }
+
+        res.json(ideas);
+    });
+});
+
+
+/*inserta una idea*/
+router.post('/ideas', auth, function (req, res, next) {
+    var idea = new Idea(req.body);
+    idea.author = req.payload.username;
+    idea.estado = 'Disponible';
+
+    console.log(" *** Se creo la idea " + idea.titulo + " *** ")
+
+    idea.save(function (err, idea) {
+        if (err) {
+            return next(err);
+        }
+
+        res.json(idea);
+    });
+});
+
+router.put('/ideas/:idea/eliminar', auth, function (req, res, next) {
+    req.idea.estadoEliminado(function (err, post) {
+        console.log(" *** Se elimino la idea " + req.idea._id + " *** ")
+        if (err) {
+            return next(err);
+        }
+
+        res.json(post);
+    });
+});
+
+router.put('/ideas/:idea/postularme', auth, function (req, res, next) {
+    req.idea.estadoRevision( req.payload.username, function (err, idea) {
+        console.log(" *** El alumno " + req.payload.username + " se postulo para la idea " + req.idea._id + " *** ")
+        if (err) {
+            return next(err);
+        }
+
+        res.json(idea);
+    });
+});
+
+
+router.put('/ideas/:idea/aceptarPostulacion', auth, function (req, res, next) {
+    req.idea.estadoAceptada(function (err, post) {
+        console.log(" *** Se acepto la postulación para la idea " + req.idea._id + " *** ")
+        if (err) {
+            return next(err);
+        }
+
+        res.json(post);
+    });
+});
+
+
+router.put('/ideas/:idea/rechazarPostulacion', auth, function (req, res, next) {
+    req.idea.estadoRechazarPostulacion(function (err, post) {
+        console.log(" *** Se rechazo la postulación para la idea " + req.idea._id + " *** ")
+        if (err) {
+            return next(err);
+        }
+
+        res.json(post);
+    });
+});
+
+
+
+
+router.get('/ideas/:idea', function (req, res, next) {
+    res.json(req.idea);
+});
+
+/*
+
+
+
+ /!*dvuelve el post del parametro y l listado de comentarios*!/
 router.get('/posts/:post', function(req, res, next) {
   req.post.populate('comments', function(err, post) {
     if (err) { return next(err); }
@@ -47,7 +149,7 @@ router.get('/posts/:post', function(req, res, next) {
     res.json(post);
   });
 });
-/*dvuelve el comment del parametro*/
+/!*dvuelve el comment del parametro*!/
 router.param('comment', function(req, res, next, id) {
   var query = Comment.findById(id);
 
@@ -60,7 +162,7 @@ router.param('comment', function(req, res, next, id) {
   });
 });
 
-/*inserta un post*/
+/!*inserta un post*!/
 router.post('/posts', auth, function(req, res, next) {
   var post = new Post(req.body);
   post.author = req.payload.username;
@@ -72,7 +174,7 @@ router.post('/posts', auth, function(req, res, next) {
   });
 });
 
-/*aumenta el nro de estrellas*/
+/!*aumenta el nro de estrellas*!/
 //llama al método de upvote de post.js
 router.put('/posts/:post/upvote',  auth,function(req, res, next) {
   req.post.upvote(function(err, post){
@@ -91,7 +193,7 @@ router.put('/posts/:post/downvote',  auth,function(req, res, next) {
 
 
 
-/*comenta un post particular*/
+/!*comenta un post particular*!/
 router.post('/posts/:post/comments',  auth, function(req, res, next) {
   var comment = new Comment(req.body);
   comment.post = req.post;
@@ -125,6 +227,7 @@ router.put('/posts/:post/comments/:comment/downvote',  auth,function(req, res, n
   });
 });
 
+*/
 
 
 /*PARA LOGIN*/
