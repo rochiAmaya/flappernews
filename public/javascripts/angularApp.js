@@ -82,6 +82,35 @@ function($stateProvider, $urlRouterProvider) {
               }]
           }
       })
+      .state('materias', {
+          url: '/materias',
+          templateUrl: '/templates/listadoMaterias.html',
+          controller: 'MateriasCtrl'
+          , resolve: {
+              postPromise: ['materiasService', function (materiasService) {
+                  return materiasService.getAll();
+              }]
+          }
+      })
+
+      .state('materiaNueva', {
+          url: '/materianew',
+          templateUrl: '/templates/agregarMateria.html',
+          controller: 'MateriaCtrl'
+      })
+
+      .state('materiaDetalle', {
+          url: '/materias/:materia',
+          templateUrl: '/templates/verMateria.html',
+          controller: 'VerMateriaCtrl'
+          , resolve: {
+              postPromise: ['materiasService', '$stateParams', function (materiasService, $stateParams) {
+                  return materiasService.get($stateParams.materia)
+              }]
+          }
+      })
+
+
   ;
 
   $urlRouterProvider.otherwise('home');

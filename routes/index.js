@@ -21,8 +21,6 @@ router.get('/', function(req, res, next) {
 
 router.param('idea', function (req, res, next, id) {
 
-    console.log(" *** Pase por el param" + req + " *** ")
-
     var query = Idea.findById(id);
 
     console.log(" *** encontre" + query + " *** ")
@@ -228,6 +226,53 @@ router.post('/ideas/:idea/comments',  auth, function(req, res, next) {
             res.json(comment);
         });
     });
+});
+
+///////////Materias
+
+/*listado de materias*/
+router.get('/materias', function (req, res, next) {
+    Materia.find( function (err, materias) {
+        if (err) {
+            return next(err);
+        }
+
+        res.json(materias);
+    });
+});
+
+
+router.param('materia', function (req, res, next, id) {
+
+    var query = Materia.findById(id);
+
+    query.exec(function (err, idea) {
+        if (err) {
+            return next(err);
+        }
+        if (!idea) {
+            return next(new Error('can\'t find materia'));
+        }
+
+        req.materia = materia;
+        return next();
+    });
+});
+
+router.get('/materias/:materia', function (req, res, next) {
+    res.json(req.materia);
+
+});
+
+router.put('/materias/:materia/eliminar', auth, function (req, res, next) {
+  /*  req.materia.estadoEliminado(function (err, materia) {
+        console.log(" *** Se elimino la idea " + req.materia._id + " *** ")
+        if (err) {
+            return next(err);
+        }
+
+        res.json(materia);
+    });*/
 });
 
 

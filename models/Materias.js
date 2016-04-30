@@ -5,4 +5,5 @@ var MateriaSchema = new mongoose.Schema({
     descripcion: String
 });
 
+
 mongoose.model('Materia', MateriaSchema);
