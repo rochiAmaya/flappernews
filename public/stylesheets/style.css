@@ -13,4 +13,7 @@ a {
 .sortorder.reverse:after {
   content: '\25bc';
 }
-
+.listacomentario{
+  max-height: 100px !important;
+  overflow-y: scroll !important;
+}

@@ -1,0 +1,13 @@
+<form ng-submit="crearComentario()"  ng-show="isLoggedIn()" style="margin-top:30px">
+    <h3>Agregar Comentario</h3>
+
+    <div class="form-group">
+        <input type="text"
+               class="form-control"
+               placeholder="Comentario"
+               ng-model="idea.comentario">
+    </div>
+    <button type="submit" class="btn btn-primary">Comentar</button>
+    <a class="btn btn-primary" ui-sref="ideas">Volver</a>
+
+</form>

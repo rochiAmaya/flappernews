@@ -71,6 +71,14 @@ app.factory('ideas', ['$http', 'auth', function($http, auth){
         });
     };
 
+
+    ideasfactory.crearComentario = function(id, comment) {
+        return $http.post('/ideas/' + id + '/comments', comment, {
+            headers: {Authorization: 'Bearer '+auth.getToken()}
+        });
+    };
+
+
     return ideasfactory;
 }]);
 
@@ -126,14 +134,22 @@ app.controller('IdeaCtrl', ['$scope', '$stateParams', 'ideas', 'auth',
 app.controller('VerIdeaCtrl', ['$scope', '$stateParams', 'ideas', 'auth',
     function ($scope, $stateParams, ideas, auth) {
 
-        $scope.titulo = ideas.ideaDetalle.titulo;
-        $scope.descripcion = ideas.ideaDetalle.descripcion;
-        $scope.author = ideas.ideaDetalle.author;
-        $scope.estado = ideas.ideaDetalle.estado;
-        $scope.alumno = ideas.ideaDetalle.alumno;
-
+        $scope.idea = ideas.ideaDetalle;
 
         $scope.isLoggedIn = auth.isLoggedIn();
+
+
+        $scope.crearComentario = function(){
+            if($scope.idea.comentario === '') { return; }
+
+            ideas.crearComentario($stateParams.idea, {
+                body: $scope.idea.comentario
+            }).success(function(comment) {
+                $scope.idea.comments.push(comment);
+            });
+            $scope.idea.comentario = '';
+        };
+
 
 
     }]);

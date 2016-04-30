@@ -6,6 +6,7 @@ var IdeaSchema = new mongoose.Schema({
     author: String,
     estado: String,
     alumno: String,
+    comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
     /*TODO materias y tags*/
     materias: [{type: Schema.Types.ObjectId, ref: 'Materia'}],
     tags: [{type: String}]

@@ -4,6 +4,7 @@ var mongoose = require('mongoose');
 var Idea = mongoose.model('Idea');
 var Tip = mongoose.model('Tip');
 var Materia = mongoose.model('Materia');
+var Comentario = mongoose.model('Comment');
 var passport = require('passport');
 var User = mongoose.model('User');
 var jwt = require('express-jwt');
@@ -134,100 +135,31 @@ router.put('/ideas/:idea/rechazarPostulacion', auth, function (req, res, next) {
 
 
 router.get('/ideas/:idea', function (req, res, next) {
-    res.json(req.idea);
-});
+    req.idea.populate('comments', function(err, idea) {
+        if (err) { return next(err); }
 
-/*
-
-
-
- /!*dvuelve el post del parametro y l listado de comentarios*!/
-router.get('/posts/:post', function(req, res, next) {
-  req.post.populate('comments', function(err, post) {
-    if (err) { return next(err); }
-
-    res.json(post);
-  });
-});
-/!*dvuelve el comment del parametro*!/
-router.param('comment', function(req, res, next, id) {
-  var query = Comment.findById(id);
-
-  query.exec(function (err, comment){
-    if (err) { return next(err); }
-    if (!comment) { return next(new Error("can't find comment")); }
-
-    req.comment = comment;
-    return next();
-  });
-});
-
-/!*inserta un post*!/
-router.post('/posts', auth, function(req, res, next) {
-  var post = new Post(req.body);
-  post.author = req.payload.username;
-
-  post.save(function(err, post){
-    if(err){ return next(err); }
-
-    res.json(post);
-  });
-});
-
-/!*aumenta el nro de estrellas*!/
-//llama al método de upvote de post.js
-router.put('/posts/:post/upvote',  auth,function(req, res, next) {
-  req.post.upvote(function(err, post){
-    if (err) { return next(err); }
-
-    res.json(post);
-  });
-});
-
-router.put('/posts/:post/downvote',  auth,function(req, res, next) {
-  req.post.downvote(function(err, post){
-    if (err) { return next(err); }
-    res.json(post);
-  });
-});
-
-
-
-/!*comenta un post particular*!/
-router.post('/posts/:post/comments',  auth, function(req, res, next) {
-  var comment = new Comment(req.body);
-  comment.post = req.post;
-  comment.author = req.payload.username;
-
-  comment.save(function(err, comment){
-    if(err){ return next(err); }
-
-    req.post.comments.push(comment);
-    req.post.save(function(err, post) {
-      if(err){ return next(err); }
-
-      res.json(comment);
+        res.json(idea);
     });
-  });
 });
 
-router.put('/posts/:post/comments/:comment/upvote', auth, function(req, res, next) {
-  req.comment.upvote(function(err, comment){
-    if (err) { return next(err); }
 
-    res.json(comment);
-  });
+//comenta una idea particular
+router.post('/ideas/:idea/comments',  auth, function(req, res, next) {
+    var comment = new Comentario(req.body);
+    comment.idea = req.idea;
+    comment.author = req.payload.username;
+
+    comment.save(function(err, comment){
+        if(err){ return next(err); }
+
+        req.idea.comments.push(comment);
+        req.idea.save(function(err, idea) {
+            if(err){ return next(err); }
+
+            res.json(comment);
+        });
+    });
 });
-
-router.put('/posts/:post/comments/:comment/downvote',  auth,function(req, res, next) {
-  req.comment.downvote(function(err, comment){
-    if (err) { return next(err); }
-
-    res.json(comment);
-  });
-});
-
-*/
 
 
 /*PARA LOGIN*/

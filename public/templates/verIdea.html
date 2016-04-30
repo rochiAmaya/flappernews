@@ -11,7 +11,7 @@
             <input type="text"
                    class="form-control"
                    placeholder="titulo"
-                   ng-model="titulo"
+                   ng-model="idea.titulo"
                    ng-disabled="true">
         </div>
 
@@ -21,7 +21,7 @@
             <input type="text"
                    class="form-control"
                    placeholder="Descripción"
-                   ng-model="descripcion"
+                   ng-model="idea.descripcion"
                    ng-disabled="true">
         </div>
 
@@ -31,7 +31,7 @@
             <input type="text"
                    class="form-control"
                    placeholder="Autor"
-                   ng-model="author"
+                   ng-model="idea.author"
                    ng-disabled="true">
         </div>
 
@@ -41,7 +41,7 @@
             <input type="text"
                    class="form-control"
                    placeholder="Estado"
-                   ng-model="estado"
+                   ng-model="idea.estado"
                    ng-disabled="true">
         </div>
 
@@ -52,12 +52,29 @@
             <input type="text"
                    class="form-control"
                    placeholder="Alumno"
-                   ng-model="alumno"
+                   ng-model="idea.alumno"
                    ng-disabled="true">
         </div>
 
         <a class="btn btn-primary" ui-sref="ideas">Volver</a>
 
+
+        <h3>Comentarios</h3>
+        <div style="max-height: 100px !important;   overflow-y: auto !important;">
+
+
+
+
+            <div ng-repeat="comment in idea.comments" >
+                - by {{comment.author}}
+                <span style="font-size:20px;margin-left:10px">
+                    Mensaje: {{comment.body}}
+                </span>
+                </br>
+            </div>
+
+        </div>
+        <ng-include src="'/templates/agregarComentario.html'"></ng-include>
 
     </div>
 
