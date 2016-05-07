@@ -154,8 +154,8 @@ app.controller('VerIdeaCtrl', ['$scope', '$stateParams', 'ideas', 'auth',
     }]);
 
 
-app.controller('IdeasPendientesCtrl', ['$scope', '$stateParams', 'ideas', 'auth',
-    function ($scope, $stateParams, ideas, auth) {
+app.controller('IdeasPendientesCtrl', ['$scope', '$stateParams', 'ideas', 'auth', '$state',
+    function ($scope, $stateParams, ideas, auth, $state) {
 
 
         $scope.ideasPendientes = ideas.ideasPendientes;
