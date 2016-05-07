@@ -15,6 +15,7 @@ require('./models/Ideas');
 require('./models/Users');
 require('./models/Comments');
 require('./models/Materia');
+require('./models/Activity');
 require('./config/passport');
 
 

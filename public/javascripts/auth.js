@@ -27,6 +27,27 @@
             }
         };
 
+        auth.isProfesor = function(){
+          var token = auth.getToken();
+          var payload = JSON.parse($window.atob(token.split('.')[1]));
+
+          return payload.rol == 'Profesor';
+        };
+
+        auth.isAlumno = function(){
+          var token = auth.getToken();
+          var payload = JSON.parse($window.atob(token.split('.')[1]));
+
+          return payload.rol == 'Alumno';
+        };
+
+        auth.isDirector = function(){
+          var token = auth.getToken();
+          var payload = JSON.parse($window.atob(token.split('.')[1]));
+
+          return payload.rol == 'Director';
+        };
+
         auth.currentUser = function(){
             if(auth.isLoggedIn()){
                 var token = auth.getToken();
@@ -35,6 +56,16 @@
                 return payload.username;
             }
         };
+
+        auth.currentRol = function(){
+            if(auth.isLoggedIn()){
+                var token = auth.getToken();
+                var payload = JSON.parse($window.atob(token.split('.')[1]));
+
+                return payload.rol;
+            }
+        };
+
 
         auth.register = function(user){
           return $http.post('/register', user).success(function(data){

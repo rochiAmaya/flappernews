@@ -5,19 +5,17 @@ var Idea = mongoose.model('Idea');
 var Tip = mongoose.model('Tip');
 var Materia = mongoose.model('Materia');
 var Comentario = mongoose.model('Comment');
+var Actividad = mongoose.model('Activity');
 var passport = require('passport');
 var User = mongoose.model('User');
 var jwt = require('express-jwt');
 var auth = jwt({secret: 'SECRET', userProperty: 'payload'});
 
 
-
 /* GET home page. */
 router.get('/', function(req, res, next) {
     res.render('index', { title: 'Express' });
 });
-
-
 
 /*hace que los post sean por id*/
 
@@ -28,7 +26,6 @@ router.param('idea', function (req, res, next, id) {
     var query = Idea.findById(id);
 
     console.log(" *** encontre" + query + " *** ")
-
 
     query.exec(function (err, idea) {
         if (err) {
@@ -43,7 +40,6 @@ router.param('idea', function (req, res, next, id) {
     });
 });
 
-
 /*listado de ideas*/
 router.get('/ideas', function (req, res, next) {
     Idea.find({ 'estado': {'$ne':'Eliminado' }}, function (err, ideas) {
@@ -54,7 +50,6 @@ router.get('/ideas', function (req, res, next) {
         res.json(ideas);
     });
 });
-
 
 /*listado de ideas pendientes*/
 router.get('/ideasPendientes', function (req, res, next) {
@@ -67,9 +62,47 @@ router.get('/ideasPendientes', function (req, res, next) {
     });
 });
 
+var rolUsuarioLoggueado = function(req, res, next, rolAComparar) {
+  console.log("Usuario con rol " + req.payload.rol);
+  return function (err) {
+    if (req.payload.rol == rolAComparar) {
+      return next(err);
+    }
+    else
+    {
+      return next();
+    }
+  }
+};
+
+var activityLogger = new function() {
+    this.loggear = function(usuario, activity, next) {
+        console.log("Hice el logueo de: " + activity + " por: " + usuario);
+
+        var actividad = new Actividad();
+        actividad.usuario = usuario;
+        actividad.descripcion = activity;
+        actividad.fecha = new Date();
+
+        actividad.save(function (err, activity) {
+            console.log("Guardo");
+            next();
+         });
+    };
+
+    this.toMiddleware = function(activity) {
+        return function(req, res, next) {
+          try {
+            activityLogger.loggear(req.payload.username, activity + req.idea._id, next);
+          } catch (error) {
+            next(error);
+          }
+        }
+    };
+};
 
 /*inserta una idea*/
-router.post('/ideas', auth, function (req, res, next) {
+router.post('/ideas', auth, activityLogger.toMiddleware("Se creo la idea "),  function (req, res, next) {
     var idea = new Idea(req.body);
     idea.author = req.payload.username;
     idea.estado = 'Disponible';
@@ -85,7 +118,8 @@ router.post('/ideas', auth, function (req, res, next) {
     });
 });
 
-router.put('/ideas/:idea/eliminar', auth, function (req, res, next) {
+/*eliminar una idea*/
+router.put('/ideas/:idea/eliminar', auth, activityLogger.toMiddleware("Se elimino la idea "), function (req, res, next) {
     req.idea.estadoEliminado(function (err, post) {
         console.log(" *** Se elimino la idea " + req.idea._id + " *** ")
         if (err) {
@@ -139,6 +173,41 @@ router.get('/ideas/:idea', function (req, res, next) {
         if (err) { return next(err); }
 
         res.json(idea);
+    });
+});
+
+
+/*Actividades*/
+
+router.param('actividad', auth, function (req, res, next, id) {
+
+    console.log(" *** Pase por el param" + req + " *** ")
+
+    var query = Actividad.findById(id);
+
+    console.log(" *** encontre" + query + " *** ")
+
+    query.exec(function (err, actividad) {
+        if (err) {
+            return next(err);
+        }
+        if (!actividad) {
+            return next(new Error('can\'t find actividad'));
+        }
+
+        req.actividad = actividad;
+        return next();
+    });
+});
+
+router.get('/actividades', auth, function (req, res, next) {
+  console.log("LLEGUE");
+    Actividad.find(function (err, actividades) {
+        if (err) {
+            return next(err);
+        }
+
+        res.json(actividades);
     });
 });
 

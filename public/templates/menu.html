@@ -1,12 +1,13 @@
 <!-- sidebar -->
-<div class="col-xs-3 col-sm-2 sidebar-offcanvas" id="sidebar" role="navigation">
+<div class="col-xs-3 col-sm-2 sidebar-offcanvas" id="sidebar" role="navigation" ng-controller="MenuCtrl">
     <ul class="nav">
 
         <li><a ui-sref="ideas">Ideas </a></li>
-        <li><a ui-sref="ideaNueva">Crear Idea </a></li>
 
-        <li><a ui-sref="ideasPendientes">Tareas Pendientes </a></li>
+        <li ng-show="isProfesor()"><a ui-sref="ideaNueva">Crear Idea </a></li>
 
+        <li ng-show="isDirector()"><a ui-sref="ideasPendientes">Tareas Pendientes </a></li>
+        <li><a ui-sref="actividades">Registro de actividades </a></li>
         <!-- <li><a href="#">Link 1</a></li>
          <li><a href="#">Link 2</a></li>
          <li><a href="#">Link 3</a></li>-->
