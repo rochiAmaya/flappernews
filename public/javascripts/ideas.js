@@ -90,7 +90,6 @@ app.controller('IdeasCtrl', ['$scope', '$stateParams', 'ideas', 'auth', '$state'
 
         $scope.isLoggedIn = auth.isLoggedIn();
 
-
         $scope.predicate = 'titulo';
         $scope.reverse = true;
         $scope.order = function (predicate) {
@@ -163,7 +162,6 @@ app.controller('IdeasPendientesCtrl', ['$scope', '$stateParams', 'ideas', 'auth'
 
         $scope.isLoggedIn = auth.isLoggedIn();
 
-
         $scope.predicate = 'titulo';
         $scope.reverse = true;
         $scope.order = function (predicate) {
@@ -186,12 +184,4 @@ app.controller('IdeasPendientesCtrl', ['$scope', '$stateParams', 'ideas', 'auth'
         $scope.aceptarPostulacion = function (idea, index) {
             ideas.aceptarPostulacion(idea, index)
         }
-
-
-    }]);
-
-
-
-
-
-
+}]);

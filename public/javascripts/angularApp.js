@@ -72,7 +72,16 @@ function($stateProvider, $urlRouterProvider) {
           }
       })
 
-
+      .state('actividades', {
+        url: '/actividades',
+          templateUrl: '/templates/actividades.html',
+          controller: 'ActividadesCtrl'
+          , resolve: {
+              postPromise: ['actividadesService', function (actividadesService) {
+                  return actividadesService.getAll();
+              }]
+          }
+      })
   ;
 
   $urlRouterProvider.otherwise('home');

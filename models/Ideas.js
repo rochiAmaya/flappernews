@@ -40,4 +40,5 @@ IdeaSchema.methods.estadoRechazarPostulacion = function (cb) {
     this.alumno = undefined;
     this.save(cb);
 };
-mongoose.model('Idea', IdeaSchema);
+
+module.exports = mongoose.model('Idea', IdeaSchema);
