@@ -110,10 +110,15 @@ app.controller('IdeasCtrl', ['$scope', '$stateParams', 'ideas', 'auth', '$state'
         }
     }]);
 
-app.controller('IdeaCtrl', ['$scope', '$stateParams', 'ideas', 'auth',
-    function ($scope, $stateParams, ideas, auth) {
+app.controller('IdeaCtrl', ['$scope', '$stateParams', 'ideas', 'auth','materiasService',
+    function ($scope, $stateParams, ideas, auth, materiasService) {
 
         $scope.isLoggedIn = auth.isLoggedIn();
+
+
+        //DIRECTIVA MULTISELECT
+        $scope.optionsMaterias=  materiasService.materias;
+
 
         $scope.addIdea = function () {
             if (!$scope.titulo || $scope.titulo === '') {
@@ -122,7 +127,8 @@ app.controller('IdeaCtrl', ['$scope', '$stateParams', 'ideas', 'auth',
 
             ideas.create({
                 titulo: $scope.titulo,
-                descripcion: $scope.descripcion
+                descripcion: $scope.descripcion,
+                materias:$scope.selection
             });
             $scope.titulo = '';
             $scope.descripcion = '';

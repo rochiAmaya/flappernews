@@ -56,6 +56,17 @@
                    ng-disabled="true">
         </div>
 
+        <div ng-hide="idea.materias == undefined">
+            <h3> Materias asociadas</h3>
+            <div  ng-repeat="materia in idea.materias" >
+                * {{materia.titulo}}
+                </br>
+            </div>
+
+        </div>
+
+
+
         <a class="btn btn-primary" ui-sref="ideas">Volver</a>
 
 

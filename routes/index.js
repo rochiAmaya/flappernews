@@ -100,7 +100,9 @@ var activityLogger = new function() {
 };
 
 /*inserta una idea*/
-router.post('/ideas', auth, activityLogger.toMiddleware("Se creo la idea "),  function (req, res, next) {
+
+//con esto 'activityLogger.toMiddleware("Se creo la idea ")' no funciona
+router.post('/ideas', auth,  function (req, res, next) {
     var idea = new Idea(req.body);
     idea.author = req.payload.username;
     idea.estado = 'Disponible';
@@ -170,7 +172,11 @@ router.get('/ideas/:idea', function (req, res, next) {
     req.idea.populate('comments', function(err, idea) {
         if (err) { return next(err); }
 
-        res.json(idea);
+        req.idea.populate('materias', function(err, idea) {
+            if (err) { return next(err); }
+
+            res.json(idea);
+        });
     });
 });
 

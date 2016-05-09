@@ -1,4 +1,4 @@
-var app = angular.module('tipModule', ['ui.router', 'angularMoment']);
+var app = angular.module('tipModule', ['ui.router', 'angularMoment', 'btorfs.multiselect']);
 
 
 app.config(['$stateProvider', '$urlRouterProvider',
@@ -48,6 +48,12 @@ function($stateProvider, $urlRouterProvider) {
           url: '/ideasnew',
           templateUrl: '/templates/newIdea.html',
           controller: 'IdeaCtrl'
+          , resolve: {
+              postPromise: ['materiasService', function (materiasService) {
+                  return materiasService.getAll();
+              }]
+          }
+
       })
 
       .state('ideaDetalle', {
