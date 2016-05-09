@@ -199,7 +199,6 @@ router.param('actividad', auth, function (req, res, next, id) {
 });
 
 router.get('/actividades', auth, function (req, res, next) {
-  console.log("LLEGUE");
     Actividad.find(function (err, actividades) {
         if (err) {
             return next(err);
@@ -232,6 +231,9 @@ router.post('/ideas/:idea/comments',  auth, function(req, res, next) {
 
 /*listado de materias*/
 router.get('/materias', function (req, res, next) {
+
+    console.log(" ***PASE POR MATERIA LIST *** ")
+
     Materia.find( function (err, materias) {
         if (err) {
             return next(err);
@@ -243,14 +245,15 @@ router.get('/materias', function (req, res, next) {
 
 
 router.param('materia', function (req, res, next, id) {
+    console.log(" ***PASE POR MATERIA PARAM *** ")
 
     var query = Materia.findById(id);
 
-    query.exec(function (err, idea) {
+    query.exec(function (err, materia) {
         if (err) {
             return next(err);
         }
-        if (!idea) {
+        if (!materia) {
             return next(new Error('can\'t find materia'));
         }
 
@@ -264,15 +267,28 @@ router.get('/materias/:materia', function (req, res, next) {
 
 });
 
-router.put('/materias/:materia/eliminar', auth, function (req, res, next) {
-  /*  req.materia.estadoEliminado(function (err, materia) {
-        console.log(" *** Se elimino la idea " + req.materia._id + " *** ")
+/*inserta una materia*/
+router.post('/materias', auth,  function (req, res, next) {
+    var materia = new Materia(req.body);
+
+    materia.save(function (err, idea) {
         if (err) {
             return next(err);
         }
 
         res.json(materia);
-    });*/
+    });
+});
+router.put('/materias/:materia/eliminar', auth, function (req, res, next) {
+
+    console.log(" *** Se AEEEAAAA"  + req.toString())
+
+    Materia.remove({ _id: req.materia._id }, function(err) {
+        if (err) {
+            return next(err);
+        }
+        res.json(req.materia);
+    });
 });
 
 
