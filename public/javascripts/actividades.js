@@ -4,8 +4,11 @@ app.factory('actividadesService', ['$http', 'auth', function($http, auth){
         actividades: []
     };
 
+
     actividadesfactory.getAll = function () {
-        return $http.get('/actividades')
+        return $http.get('/actividades', {
+            headers: {Authorization: 'Bearer ' + auth.getToken()}
+        })
             .success(function (data) {
                 angular.copy(data, actividadesfactory.actividades);
             });

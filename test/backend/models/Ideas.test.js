@@ -18,7 +18,18 @@ describe("modelo Ideas", function() {
 		mockgoose.reset(done);
 	})
 
+	after(function(done){
+
+		mockgoose(mongoose).then(function() {
+			mongoose.disconnect(done);
+
+		}).catch(function(error){
+			done(error);
+		})
+	})
+
 	var idea;
+    var alumno;
 
 	beforeEach(function(done) {
 		idea = new Idea();
@@ -63,5 +74,16 @@ describe("modelo Ideas", function() {
 				done();
 			});
 		});
+
+		/*it("alumno se postula", function(done) {
+			idea.estadoRechazada(function(err, ideaSaved) {
+				should.not.exist(err);
+
+				ideaSaved.should.have.property("titulo").that.equal("Dummy idea");
+				ideaSaved.estado.should.be.equal("Rechazada");
+
+				done();
+			});
+		});*/
 	});
 });
