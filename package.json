@@ -26,8 +26,11 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "gulp": "^3.9.1",
+    "gulp-angular-protractor": "^0.1.1",
     "gulp-jshint": "^2.0.1",
     "gulp-main-bower-files": "^1.5.1",
+    "gulp-mocha": "^2.2.0",
+    "gulp-protractor": "^2.3.0",
     "jshint": "^2.9.2",
     "jshint-stylish": "^2.2.0",
     "karma": "^0.13.22",

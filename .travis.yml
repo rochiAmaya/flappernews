@@ -7,6 +7,4 @@ node_js:
 before_script:
   - npm install -g gulp
 script:
-
-#lo ideal es q sea solo gulp, y que gulp corra su tarea default
-  - gulp lint
+  - gulp
