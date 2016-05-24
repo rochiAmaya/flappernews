@@ -1,8 +1,12 @@
 language: node_js
 node_js:
   - "0.12"
-    
+
+
+#    gulp config
 before_script:
-  npm install -g gulp
+  - npm install -g gulp
 script:
-  gulp lint
+
+#lo ideal es q sea solo gulp, y que gulp corra su tarea default
+  - gulp lint
