@@ -2,8 +2,4 @@
   //para que no chille por los ;
   "asi":true
 
-
-  // para usar la version nueva de js
-  //"esnext" : true
-  //
 }

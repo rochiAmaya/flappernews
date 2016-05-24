@@ -6,7 +6,8 @@ var mainBowerFiles = require('gulp-main-bower-files');
 gulp.task('lint', function() {
     return gulp.src('*.js')
         .pipe(jshint())
-        .pipe(jshint.reporter(stylish));
+        .pipe(jshint.reporter(stylish))
+        .pipe(jshint.reporter('fail'));
 });
 
 /*
