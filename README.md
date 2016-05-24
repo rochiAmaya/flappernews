@@ -1,0 +1,1 @@
+https://travis-ci.org/rochiAmaya/flappernews.svg?branch=master
