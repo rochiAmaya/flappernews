@@ -6,7 +6,7 @@ exports.config = {
     seleniumAddress: 'http://localhost:4444/wd/hub',
     specs: [
         //ACA van los archivos que quiero q se corran con protractor.
-        'tests/e2e/login.test.js'
-
+        'tests/e2e/login.test.js',
+        'tests/e2e/home.test.js'
     ]
 };

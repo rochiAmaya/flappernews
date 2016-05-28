@@ -2,6 +2,7 @@
   "name": "flapper-news",
   "version": "0.0.0",
   "private": true,
+  "main": "Gulpfile.js",
   "scripts": {
     "start": "node ./bin/www",
     "test": "test/*"
@@ -24,13 +25,18 @@
     "serve-favicon": "^2.3.0"
   },
   "devDependencies": {
+    "bower": "^1.7.9",
     "chai": "^3.5.0",
     "gulp": "^3.9.1",
     "gulp-angular-protractor": "^0.1.1",
+    "gulp-concat": "^2.6.0",
+    "gulp-inject": "^4.1.0",
     "gulp-jshint": "^2.0.1",
     "gulp-main-bower-files": "^1.5.1",
+    "gulp-minify": "0.0.11",
     "gulp-mocha": "^2.2.0",
     "gulp-protractor": "^2.3.0",
+    "gulp-uglify": "^1.5.3",
     "jshint": "^2.9.2",
     "jshint-stylish": "^2.2.0",
     "karma": "^0.13.22",

@@ -26,7 +26,7 @@ var routes = require('./routes/index');
 var app = express();
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', path.join(__dirname, 'public'));
 app.set('view engine', 'ejs');
 
 // uncomment after placing your favicon in /public
@@ -37,10 +37,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.jpg')));
-app.use(express.static(path.join(__dirname, 'bower_components')));
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.static(path.join(__dirname, 'node_modules')));
-
+app.use("/external", express.static(path.join(__dirname, 'bower_components')));
 app.use(passport.initialize());
 
 app.use('/', routes);

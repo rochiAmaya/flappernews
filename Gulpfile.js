@@ -1,16 +1,22 @@
 var gulp = require("gulp");
 var jshint = require('gulp-jshint');
 var stylish = require('jshint-stylish');
-var mainBowerFiles = require('gulp-main-bower-files');
+var inject = require("gulp-inject");
+var concat = require("gulp-concat");
+var bowerFiles = require('gulp-main-bower-files');
 var mocha = require('gulp-mocha');
 var Server = require('karma').Server;
 var gulpProtractorAngular = require('gulp-angular-protractor');
+var uglify = require('gulp-uglify');
+var minify = require('gulp-minify');
 
 
-gulp.task('default', ['lint']);
+
+//tarea default que corre travis
+gulp.task('default', ['lint', 'build']);
 
 
-
+//tarea para chequear el codigo con jslint
 gulp.task('lint', function() {
     return gulp.src('*.js')
         .pipe(jshint())
@@ -18,25 +24,74 @@ gulp.task('lint', function() {
         .pipe(jshint.reporter('fail'));
 });
 
-/*
- Tarea : No exponer toda la carpeta bower_components, sino sólo los archivos necesarios, utilizando el plugin "gulp-main-bower-files"
- */
-gulp.task('main-bower-files', function() {
-    return gulp.src('./bower.json')
-        .pipe(mainBowerFiles([[filter],options][callback]))
-    .pipe(gulp.dest('./wwwroot/libs')); //TODO ver su la ruta destino es la correcta
+
+
+//////////////////////////////////////////BUILD seccion
+var sources = {
+    js: ["public/javascripts/external/**/*.js",
+        "public/javascripts/**/*.js"],
+    test: {
+        frontend: ["tests/frontend/dependencies/**/*.js",
+            "public/javascripts/**/*.js",
+            'tests/frontend/**/*.js'],
+        backend: ["tests/backend/**/*.js"],
+        e2e: ["tests/e2e/**/*.js"]
+    }
+};
+
+
+//funcio para copiar archivos de bower
+function dependencyCopy(outDir, outFile, options) {
+    return gulp.src("bower.json")
+        .pipe(bowerFiles(options || {}))
+        .pipe(concat(outFile))
+
+        .pipe(gulp.dest(outDir));
+}
+//dependencies-min.js me genera xxx-min.js, como importo solamente este archivo y no el xxx.js
+//TODO: Antes de esto deberia limpiarse
+gulp.task("dependency:test:copy", function() {
+    return dependencyCopy("tests/frontend/dependencies", "test-dependencies.js", {includeDev: true});
 });
+
+//TODO: Antes de esto deberia limpiarse
+gulp.task("dependency:external:copy", function() {
+    return dependencyCopy("public/javascripts/external", "dependencies.js");
+});
+
+
+//pone los js en el index header
+gulp.task("dependency:link", ["dependency:external:copy"], function() {
+    var dependencies = gulp.src(sources.js);
+
+    return gulp.src("public/index.ejs")
+        .pipe(inject(dependencies, {
+            ignorePath: 'public',
+            addRootSlash: false
+        }))
+        .pipe(gulp.dest("public"))
+});
+
+gulp.task("build", ["dependency:link"]);
+///////////////////////////////////TEST /////////////////////////////////////////////////////////
 
 /*una tarea que permita correrlos a todos (test)
 * */
-gulp.task('all-test', ['mocha-test', 'karma-test', 'protractor-test']);
+gulp.task('all-test', ['test:backend', 'test:frontend', 'protractor-test']);
 
 
 /*
 * backend,
 * */
-gulp.task('mocha-test', function () {
-    return gulp.src('/test/backend/*.js', {read: false})
+
+gulp.task("test:backend", function() {
+    return gulp.src(sources.test.backend)
+        .pipe(mocha());
+});
+
+
+/*gulp.task('mocha-test', function () {
+    return gulp.src(sources.test.backend, {read: false})
 
         .pipe(mocha({
             reporter: 'spec',
@@ -48,24 +103,46 @@ gulp.task('mocha-test', function () {
                 Idea : require("../../../models/Ideas")
             }
         }));
-});
+});*/
 
 
 /*frontend (karma) */
-gulp.task('karma-test', function (done) {
+
+
+gulp.task("karma:dependency:link", ["dependency:external:copy", "dependency:test:copy"], function() {
+    var dependencies = gulp.src(sources.test.frontend);
+
+    return gulp.src("karma.conf.js")
+        .pipe(inject(dependencies, {
+            starttag: "files: [",
+            endtag: "],",
+            transform: function(path, file, index, total) {
+                return '"' + path + '"' + (index + 1 < total ? "," : "");
+            },
+            addRootSlash: false
+        }))
+        .pipe(gulp.dest("."))
+});
+
+gulp.task("test:frontend", ["karma:dependency:link"], function(done) {
     new Server({
-        configFile: __dirname + '/karma.conf.js',
+        configFile: __dirname + "/karma.conf.js",
         singleRun: true
-    }, done).start();
+    }).start(done);
 });
 
 
 
 /*end-to-end (protractor)*/
+/*
+gulp.task("test:e2e", ["build"], function() {
+    return gulp.src(sources.test.e2e)
+        .pipe(protractor({configFile: "protractor.conf.js"}));
+});*/
 // Setting up the test task
 gulp.task('protractor-test', function(callback) {
     gulp
-        .src(['/test/e2e/*.js'])
+        .src(sources.test.e2e)
         .pipe(gulpProtractorAngular({
             'configFile': 'protractor.conf.js',
             'debug': false,
@@ -76,3 +153,16 @@ gulp.task('protractor-test', function(callback) {
         })
         .on('end', callback);
 });
+
+
+/*
+
+/!*PRacticando ; Concatenar y iglufiar los js de public y routes*!/
+
+gulp.task('demo', function () {
+    gulp.src(['public/!*.js', 'routes/!*.js'])
+        .pipe(concat('compilacion.js'))
+        .pipe(uglify())
+        .pipe(minify())
+        .pipe(gulp.dest('build/'))
+});*/
