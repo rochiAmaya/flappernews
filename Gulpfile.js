@@ -9,6 +9,8 @@ var Server = require('karma').Server;
 var gulpProtractorAngular = require('gulp-angular-protractor');
 var uglify = require('gulp-uglify');
 var minify = require('gulp-minify');
+var del = require('del');
+var series = require('stream-series');
 
 
 
@@ -27,11 +29,15 @@ gulp.task('lint', function() {
 
 
 //////////////////////////////////////////BUILD seccion
+//Ejemplo gulp.src(['js/**/*.js', '!js/**/*.min.js'])
 var sources = {
-    js: ["public/javascripts/external/**/*.js",
-        "public/javascripts/**/*.js"],
+    dependencies:["public/javascripts/external/dependencies-min.js"
+        ],
+    js: [
+        "public/javascripts/**/*.js", '!public/javascripts/external/dependencies.js', '!public/javascripts/external/dependencies-min.js'],
     test: {
-        frontend: ["tests/frontend/dependencies/**/*.js",
+        frontend: ["tests/frontend/dependencies/test-dependencies-min.js",
+            '!tests/frontend/dependencies/test-dependencies.js',
             "public/javascripts/**/*.js",
             'tests/frontend/**/*.js'],
         backend: ["tests/backend/**/*.js"],
@@ -45,34 +51,48 @@ function dependencyCopy(outDir, outFile, options) {
     return gulp.src("bower.json")
         .pipe(bowerFiles(options || {}))
         .pipe(concat(outFile))
-
+        .pipe(minify())
         .pipe(gulp.dest(outDir));
+
+
+
 }
+
 //dependencies-min.js me genera xxx-min.js, como importo solamente este archivo y no el xxx.js
-//TODO: Antes de esto deberia limpiarse
 gulp.task("dependency:test:copy", function() {
+    del([
+        'tests/frontend/dependencies/*'
+    ]);
     return dependencyCopy("tests/frontend/dependencies", "test-dependencies.js", {includeDev: true});
 });
 
-//TODO: Antes de esto deberia limpiarse
-gulp.task("dependency:external:copy", function() {
+gulp.task("dependency:external:copy",function() {
+    del([
+        'public/javascripts/external/*'
+    ]);
     return dependencyCopy("public/javascripts/external", "dependencies.js");
 });
 
 
 //pone los js en el index header
 gulp.task("dependency:link", ["dependency:external:copy"], function() {
-    var dependencies = gulp.src(sources.js);
 
+    var dependencies = gulp.src(sources.dependencies, {read: false});
+    var myjs = gulp.src(sources.js, {read: false});
+
+    //series, hace que pueda importar en cierto orden mis archivos. Sirve para cdo hay lios de dependencias.
     return gulp.src("public/index.ejs")
-        .pipe(inject(dependencies, {
+        .pipe(inject((series(dependencies, myjs)), {
             ignorePath: 'public',
             addRootSlash: false
         }))
         .pipe(gulp.dest("public"))
 });
 
-gulp.task("build", ["dependency:link"]);
+gulp.task("build", ["dependency:link"], function(){
+
+
+});
 ///////////////////////////////////TEST /////////////////////////////////////////////////////////
 
 /*una tarea que permita correrlos a todos (test)
