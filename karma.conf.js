@@ -43,6 +43,27 @@ module.exports = function(config) {
             ],
 
 
+        browsers: ['PhantomJS2', 'PhantomJS2_custom'],
+
+        // you can define custom flags
+        customLaunchers: {
+            'PhantomJS_custom': {
+                base: 'PhantomJS2',
+                options: {
+                    windowName: 'my-window',
+                    settings: {
+                        webSecurityEnabled: false
+                    }
+                },
+                flags: ['--load-images=true'],
+                debug: true
+            }
+        },
+
+        phantomjsLauncher: {
+            exitOnResourceError: true
+        },
+
         // list of files to exclude
         exclude: [
         ],
@@ -75,11 +96,6 @@ module.exports = function(config) {
 
         // enable / disable watching file and executing tests whenever any file changes
         autoWatch: true,
-
-
-        // start these browsers
-        // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-        browsers: ['Chrome'],
 
 
         // Continuous Integration mode

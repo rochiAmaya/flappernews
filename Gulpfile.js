@@ -15,7 +15,7 @@ var series = require('stream-series');
 
 
 //tarea default que corre travis
-gulp.task('default', ['lint', 'build']);
+gulp.task('default', ['lint', 'build', 'lite-test']);
 
 
 //tarea para chequear el codigo con jslint
@@ -105,6 +105,7 @@ gulp.task("build", ["dependency:link"], function(){
 * */
 gulp.task('all-test', ['test:backend', 'test:frontend', 'protractor-test']);
 
+gulp.task('lite-test', ['test:backend', 'test:frontend']);
 
 /*
 * backend,
@@ -162,7 +163,7 @@ gulp.task("test:frontend", ["karma:dependency:link"], function(done) {
 
 /*end-to-end (protractor)*/
 
-gulp.task("test:e2e", ["build"], function() {
+gulp.task("protractor-test", ["build"], function() {
     return gulp.src(sources.test.e2e)
         .pipe(gulpProtractorAngular({configFile: "protractor.conf.js"}));
 });
