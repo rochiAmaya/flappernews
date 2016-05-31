@@ -161,13 +161,13 @@ gulp.task("test:frontend", ["karma:dependency:link"], function(done) {
 
 
 /*end-to-end (protractor)*/
-/*
+
 gulp.task("test:e2e", ["build"], function() {
     return gulp.src(sources.test.e2e)
-        .pipe(protractor({configFile: "protractor.conf.js"}));
-});*/
+        .pipe(gulpProtractorAngular({configFile: "protractor.conf.js"}));
+});
 // Setting up the test task
-gulp.task('protractor-test', function(callback) {
+/*gulp.task('protractor-test', function(callback) {
     gulp
         .src(sources.test.e2e)
         .pipe(gulpProtractorAngular({
@@ -179,7 +179,7 @@ gulp.task('protractor-test', function(callback) {
             console.log(e);
         })
         .on('end', callback);
-});
+});*/
 
 
 /*

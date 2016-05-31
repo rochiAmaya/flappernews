@@ -7,7 +7,7 @@ describe("login page", function() {
         browser.get("http://localhost:3000/#/login");
 
         browser.getTitle().then(function(valueOfTitle) {
-            valueOfTitle.should.be.equal("News!");
+            valueOfTitle.should.be.equal("Flapper News");
             done();
         });
     });
@@ -17,7 +17,7 @@ describe("login page", function() {
 
         element(by.model("user.username")).sendKeys("pipo");
         element(by.model("user.password")).sendKeys("1234");
-        element(by.buttonText("Ingresar")).click();
+        element(by.buttonText("Log In")).click();
 
         element(by.binding("currentUser()")).getText().then(function(usuarioLogueado) {
             usuarioLogueado.should.be.equal("pipo");
@@ -26,8 +26,8 @@ describe("login page", function() {
     });
 
     afterEach(function(done) {
-        var botonSalir = element(by.linkText("Salir"));
-        element(by.linkText("Salir")).isPresent().then(function(value) {
+        var botonSalir = element(by.linkText("Log Out"));
+        element(by.linkText("Log Out")).isPresent().then(function(value) {
             if (value) {
                 //rowser.pause();
                 botonSalir.click().then(done);
@@ -38,3 +38,4 @@ describe("login page", function() {
     });
 
 });
+

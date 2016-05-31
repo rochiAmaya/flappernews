@@ -21,10 +21,10 @@
                 Mensaje: {{comment.body}}
             </span>
         </div>
-        <div ng-hide="isLoggedIn">
+        <div ng-hide="isLoggedIn()">
 		  <h3>Necesita hacer <a href="/#/login">Log In</a> o <a href="/#/register">Registrarse</a> Antes de hacer un comentario</h3>
 		</div>
-        <form ng-submit="addComment()"  ng-show="isLoggedIn" style="margin-top:30px">
+        <form ng-submit="addComment()"  ng-show="isLoggedIn()" style="margin-top:30px">
             <h3>Add a new comment</h3>
             <div class="form-group">
                 <input type="text"

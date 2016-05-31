@@ -1,5 +1,4 @@
-<div class="container" ng-controller="MenuCtrl">
-    <div class="col-xs-10 col-sm-7">
+    <div class="col-xs-10 col-sm-12" ng-controller="MenuCtrl">
 
         <h1>Ideas</h1>
         <div class="col-md-12">
@@ -19,31 +18,30 @@
                     <th></th>
                 </tr>
 
-                <tr ng-repeat="idea in ideas | orderBy:predicate:reverse">
-                    <th>{{idea.titulo}}</th>
-                    <th>{{idea.author}}</th>
-                    <th>{{idea.estado}}</th>
-                    <th>
-                        <button ng-disabled="!isLoggedIn" type="button" class="btn btn-default" aria-label="Ver idea"
+                <tr ng-repeat="idea in ideas | orderBy:predicate:reverse" id="{{idea.titulo}}">
+                    <td>{{idea.titulo}}</td>
+                    <td>{{idea.author}}</td>
+                    <td class="estado">{{idea.estado}}</td>
+                    <td>
+                        <button ng-disabled="!isLoggedIn()" type="button" class="btn btn-default" aria-label="Ver idea"
                                 title="Ver idea"
                                 ng-click="verIdea(idea._id)">
                             <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                         </button>
 
-                        <button ng-disabled="!isLoggedIn" type="button" class="btn btn-default"
+                        <button ng-disabled="!isLoggedIn()" type="button" class="btn btn-default"
                                 title="Eliminar idea" ng-show="isDirector"
                                 aria-label="Eliminar idea" ng-click="eliminarIdea(idea, $index)">
                             <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                         </button>
 
-                        <button ng-disabled="!isLoggedIn" ng-show="isAlumno && idea.estado == 'Disponible' "
-                                type="button" class="btn btn-default" title="Postularme"
+                        <button ng-disabled="!isLoggedIn()" ng-show="isAlumno && idea.estado == 'Disponible' "
+                                type="button" class="btn btn-default postular-button" title="Postularme"
                                 aria-label="Postularme" ng-click="postularmeIdea(idea, $index)">
                             <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
                         </button>
-                    </th>
+                    </td>
                 </tr>
             </table>
         </div>
     </div>
-</div>

@@ -45,7 +45,7 @@ app.controller('MateriasCtrl', ['$scope', '$stateParams', 'materiasService', 'au
 
         $scope.materias = materiasService.materias;
 
-        $scope.isLoggedIn = auth.isLoggedIn();
+        $scope.isLoggedIn = auth.isLoggedIn;
 
 
         $scope.predicate = 'titulo';
@@ -70,7 +70,7 @@ app.controller('MateriasCtrl', ['$scope', '$stateParams', 'materiasService', 'au
 app.controller('MateriaCtrl', ['$scope', '$stateParams', 'materiasService', 'auth',
     function ($scope, $stateParams, materiasService, auth) {
 
-        $scope.isLoggedIn = auth.isLoggedIn();
+        $scope.isLoggedIn = auth.isLoggedIn;
 
         $scope.addMateria = function () {
             if (!$scope.titulo || $scope.titulo === '') {
@@ -92,7 +92,7 @@ app.controller('VerMateriaCtrl', ['$scope', '$stateParams', 'materiasService', '
 
         $scope.materia = materiasService.materiaDetalle;
 
-        $scope.isLoggedIn = auth.isLoggedIn();
+        $scope.isLoggedIn = auth.isLoggedIn;
 
 
     }]);
