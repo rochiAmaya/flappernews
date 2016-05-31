@@ -28,6 +28,7 @@ moduleAuth.factory('auth', ['$http', '$window', function ($http, $window) {
 
         auth.isProfesor = function(){
           var token = auth.getToken();
+          if (token == undefined) return false;
           var payload = JSON.parse($window.atob(token.split('.')[1]));
 
           return payload.rol == 'Profesor';
@@ -35,6 +36,7 @@ moduleAuth.factory('auth', ['$http', '$window', function ($http, $window) {
 
         auth.isAlumno = function(){
           var token = auth.getToken();
+          if (token == undefined) return false;
           var payload = JSON.parse($window.atob(token.split('.')[1]));
 
           return payload.rol == 'Alumno';
@@ -42,6 +44,7 @@ moduleAuth.factory('auth', ['$http', '$window', function ($http, $window) {
 
         auth.isDirector = function(){
           var token = auth.getToken();
+          if (token == undefined) return false;
           var payload = JSON.parse($window.atob(token.split('.')[1]));
 
           return payload.rol == 'Director';

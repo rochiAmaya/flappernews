@@ -4,8 +4,7 @@
 
         <li><a ui-sref="ideas">Ideas </a></li>
 
-        <!-- ng-show="isProfesor"-->
-        <li ><a ui-sref="ideaNueva">Crear Idea </a></li>
+        <li ng-show="isProfesor"><a ui-sref="ideaNueva">Crear Idea </a></li>
 
         <li ng-show="isDirector"><a ui-sref="ideasPendientes">Tareas Pendientes </a></li>
 
@@ -14,7 +13,6 @@
         <li><a ui-sref="materias">Materias</a></li>
 
         <li><a ui-sref="materiaNueva">Crear Materia </a></li>
-
 
     </ul>
 </div>

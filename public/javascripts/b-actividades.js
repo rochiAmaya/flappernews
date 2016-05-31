@@ -20,7 +20,7 @@ app.factory('actividadesService', ['$http', 'auth', function($http, auth){
 app.controller('MenuCtrl', ['$scope', 'auth', 
     function ($scope, auth) {
         $scope.isProfesor = auth.isProfesor();
-        $scope.isDirector = false //auth.isDirector();
+        $scope.isDirector = auth.isDirector();
         $scope.isAlumno = auth.isAlumno();
  }]);
 
@@ -28,5 +28,5 @@ app.controller('ActividadesCtrl', ['$scope', '$stateParams', 'actividadesService
     function ($scope, $stateParams, actividadesService, auth, $state) {
         $scope.actividades = actividadesService.actividades;
 
-        $scope.isLoggedIn = auth.isLoggedIn();
+        $scope.isLoggedIn = auth.isLoggedIn;
  }]);

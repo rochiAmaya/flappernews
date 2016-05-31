@@ -8,27 +8,19 @@ describe("home", function() {
         it("tiene que tener un encabezado", function(done) {
             browser.get("http://localhost:3000/#/home");
 
-            element(by.css(".page-header h1")).getText().then(function(value) {
-                value.should.be.equal("UNQ Noticias");
+            element(by.css("h2")).getText().then(function(value) {
+                value.should.be.equal("Bienvenido al gestor de TIPS!");
                 done();
             })
         });
 
-        it("tiene que existir un link a Ingresar", function(done) {
-            browser.get("http://localhost:3000/#/home");
-
-            element(by.linkText("Ingresar")).isPresent().then(function(value) {
-                value.should.be.true;
-                done();
-            });
-        });
     })
 
     function logueate() {
         browser.get("http://localhost:3000/#/login");
         element(by.model("user.username")).sendKeys("pipo");
         element(by.model("user.password")).sendKeys("1234");
-        element(by.buttonText("Ingresar")).click();
+        element(by.buttonText("Log In")).click();
     }
 
     context("cuando si hay un usuario logueado", function() {
@@ -36,28 +28,18 @@ describe("home", function() {
             logueate();
         });
 
-        it("tiene que tener un encabezado", function(done) {
+        it("no tiene que existir un link a Ingresar", function() {
             browser.get("http://localhost:3000/#/home");
 
-            element(by.css(".page-header h1")).getText().then(function(value) {
-                value.should.be.equal("UNQ Noticias");
-                done();
-            })
-        });
-
-        it("no tiene que existir un link a Ingresar", function(done) {
-            browser.get("http://localhost:3000/#/home");
-
-            element(by.linkText("Ingresar")).isPresent().then(function(value) {
+            element(by.linkText("Log In")).isPresent().then(function(value) {
                 value.should.be.false;
-                done();
             });
         });
     })
 
     afterEach(function(done) {
-        var botonSalir = element(by.linkText("Salir"));
-        element(by.linkText("Salir")).isPresent().then(function(value) {
+        var botonSalir = element(by.linkText("Log Out"));
+        element(by.linkText("Log Out")).isPresent().then(function(value) {
             if (value) {
                 //rowser.pause();
                 botonSalir.click().then(done);

@@ -1,7 +1,5 @@
-<div class="container">
-
     <div class="col-xs-6 col-lg-5">
-        <div ng-hide="isLoggedIn">
+        <div ng-hide="isLoggedIn()">
             <h3>Necesita hacer <a href="/#/login">Log In</a> o <a href="/#/register">Registrarse</a> Antes de crear una
                 idea</h3>
         </div>
@@ -74,8 +72,6 @@
         <div style="max-height: 100px !important;   overflow-y: auto !important;">
 
 
-
-
             <div ng-repeat="comment in idea.comments" >
                 - by {{comment.author}}
                 <span style="font-size:20px;margin-left:10px">
@@ -88,5 +84,3 @@
         <ng-include src="'/templates/agregarComentario.html'"></ng-include>
 
     </div>
-
-</div>

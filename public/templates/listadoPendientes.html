@@ -1,6 +1,4 @@
-<div class="container">
-
-    <div class="col-xs-10 col-sm-7">
+    <div class="col-xs-10 col-sm-12">
 
 
         <h1>Ideas</h1>
@@ -28,13 +26,13 @@
                     <th>{{idea.estado}}</th>
                     <th>{{idea.alumno}}</th>
                     <th>
-                        <button ng-disabled="!isLoggedIn" type="button" class="btn btn-default" aria-label="Ver idea"
+                        <button ng-disabled="!isLoggedIn()" type="button" class="btn btn-default" aria-label="Ver idea"
                                 title="Ver idea"
                                 ng-click="verIdea(idea._id)">
                             <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                         </button>
 
-                        <button ng-disabled="!isLoggedIn" ng-show="idea.estado == 'En Revisión'" type="button"
+                        <button ng-disabled="!isLoggedIn()" ng-show="idea.estado == 'En Revisión'" type="button"
                                 class="btn btn-default"
                                 title="Rechazar Postulado"
                                 aria-label="Rechazar" ng-click="rechazarPostulacion(idea, $index)">
@@ -42,7 +40,7 @@
                         </button>
 
 
-                        <button ng-disabled="!isLoggedIn" ng-show="idea.estado == 'En Revisión'" type="button"
+                        <button ng-disabled="!isLoggedIn()" ng-show="idea.estado == 'En Revisión'" type="button"
                                 class="btn btn-default"
                                 title="Aceptar Postulado"
                                 aria-label="Aceptar" ng-click="aceptarPostulacion(idea, $index)">
@@ -55,4 +53,3 @@
             </table>
         </div>
     </div>
-</div>

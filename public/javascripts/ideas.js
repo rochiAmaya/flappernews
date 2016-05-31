@@ -91,7 +91,7 @@ moduleIdea.controller('IdeasCtrl', ['$scope', '$stateParams', 'ideas', 'auth', '
 
         $scope.ideas = ideas.ideas;
 
-        $scope.isLoggedIn = auth.isLoggedIn();
+        $scope.isLoggedIn = auth.isLoggedIn;
 
         $scope.predicate = 'titulo';
         $scope.reverse = true;
@@ -116,7 +116,7 @@ moduleIdea.controller('IdeasCtrl', ['$scope', '$stateParams', 'ideas', 'auth', '
 moduleIdea.controller('IdeaCtrl', ['$scope', '$stateParams', 'ideas', 'auth', 'materiasService',
     function ($scope, $stateParams, ideas, auth, materiasService) {
 
-        $scope.isLoggedIn = auth.isLoggedIn();
+        $scope.isLoggedIn = auth.isLoggedIn;
 
 
         //DIRECTIVA MULTISELECT
@@ -125,6 +125,7 @@ moduleIdea.controller('IdeaCtrl', ['$scope', '$stateParams', 'ideas', 'auth', 'm
 
         $scope.addIdea = function () {
             if (!$scope.titulo || $scope.titulo === '') {
+                $scope.warning = true;
                 return;
             }
 
@@ -133,6 +134,7 @@ moduleIdea.controller('IdeaCtrl', ['$scope', '$stateParams', 'ideas', 'auth', 'm
                 descripcion: $scope.descripcion,
                 materias:$scope.selection
             });
+            $scope.success = true;
             $scope.titulo = '';
             $scope.descripcion = '';
         };
@@ -144,7 +146,7 @@ moduleIdea.controller('VerIdeaCtrl', ['$scope', '$stateParams', 'ideas', 'auth',
 
         $scope.idea = ideas.ideaDetalle;
 
-        $scope.isLoggedIn = auth.isLoggedIn();
+        $scope.isLoggedIn = auth.isLoggedIn;
 
 
         $scope.crearComentario = function(){
@@ -169,7 +171,7 @@ moduleIdea.controller('IdeasPendientesCtrl', ['$scope', '$stateParams', 'ideas',
 
         $scope.ideasPendientes = ideas.ideasPendientes;
 
-        $scope.isLoggedIn = auth.isLoggedIn();
+        $scope.isLoggedIn = auth.isLoggedIn;
 
         $scope.predicate = 'titulo';
         $scope.reverse = true;

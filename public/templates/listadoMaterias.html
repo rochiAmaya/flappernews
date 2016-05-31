@@ -1,8 +1,6 @@
-<div class="container">
-
     <div class="col-xs-10 col-sm-7">
 
-        <h1>Ideas</h1>
+        <h1>Materias</h1>
         <div class="col-md-12">
             <table class="table table-striped table-condensed">
                 <tr>
@@ -15,23 +13,22 @@
                 </tr>
 
                 <tr ng-repeat="materia in materias | orderBy:predicate:reverse">
-                    <th>{{materia.titulo}}</th>
-                    <th>
-                        <button ng-disabled="!isLoggedIn" type="button" class="btn btn-default" aria-label="Ver Materia"
+                    <td>{{materia.titulo}}</td>
+                    <td>
+                        <button ng-disabled="!isLoggedIn()" type="button" class="btn btn-default" aria-label="Ver Materia"
                                 title="Ver Materia"
                                 ng-click="verMateria(materia._id)">
                             <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                         </button>
 
 
-                        <button ng-disabled="!isLoggedIn" type="button" class="btn btn-default"
+                        <button ng-disabled="!isLoggedIn()" type="button" class="btn btn-default"
                                 title="Eliminar Materia"
                                 aria-label="Eliminar Materia" ng-click="eliminarMateria(materia, $index)">
                             <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                         </button>
-                    </th>
+                    </td>
                 </tr>
             </table>
         </div>
     </div>
-</div>
