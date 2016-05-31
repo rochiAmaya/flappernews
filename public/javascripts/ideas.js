@@ -1,4 +1,6 @@
-app.factory('ideas', ['$http', 'auth', function($http, auth){
+var moduleIdea = angular.module('module.ideas', ['ui.router', 'angularMoment', 'btorfs.multiselect', 'module.auth']);
+
+moduleIdea.factory('ideas', ['$http', 'auth', function ($http, auth) {
     var ideasfactory = {
         ideas: [],
         ideaDetalle: {},
@@ -49,6 +51,7 @@ app.factory('ideas', ['$http', 'auth', function($http, auth){
         return $http.put('/ideas/' + idea._id + '/postularme', null, {
             headers: {Authorization: 'Bearer ' + auth.getToken()}
         }).success(function (data) {
+            ideasfactory.ideaDetalle.estado = "En Revisión";
             idea.estado = "En Revisión";
         });
     };
@@ -83,7 +86,7 @@ app.factory('ideas', ['$http', 'auth', function($http, auth){
 }]);
 
 
-app.controller('IdeasCtrl', ['$scope', '$stateParams', 'ideas', 'auth', '$state',
+moduleIdea.controller('IdeasCtrl', ['$scope', '$stateParams', 'ideas', 'auth', '$state',
     function ($scope, $stateParams, ideas, auth, $state) {
 
         $scope.ideas = ideas.ideas;
@@ -110,7 +113,7 @@ app.controller('IdeasCtrl', ['$scope', '$stateParams', 'ideas', 'auth', '$state'
         }
     }]);
 
-app.controller('IdeaCtrl', ['$scope', '$stateParams', 'ideas', 'auth','materiasService',
+moduleIdea.controller('IdeaCtrl', ['$scope', '$stateParams', 'ideas', 'auth', 'materiasService',
     function ($scope, $stateParams, ideas, auth, materiasService) {
 
         $scope.isLoggedIn = auth.isLoggedIn();
@@ -136,7 +139,7 @@ app.controller('IdeaCtrl', ['$scope', '$stateParams', 'ideas', 'auth','materiasS
     }]);
 
 
-app.controller('VerIdeaCtrl', ['$scope', '$stateParams', 'ideas', 'auth',
+moduleIdea.controller('VerIdeaCtrl', ['$scope', '$stateParams', 'ideas', 'auth',
     function ($scope, $stateParams, ideas, auth) {
 
         $scope.idea = ideas.ideaDetalle;
@@ -160,7 +163,7 @@ app.controller('VerIdeaCtrl', ['$scope', '$stateParams', 'ideas', 'auth',
     }]);
 
 
-app.controller('IdeasPendientesCtrl', ['$scope', '$stateParams', 'ideas', 'auth', '$state',
+moduleIdea.controller('IdeasPendientesCtrl', ['$scope', '$stateParams', 'ideas', 'auth', '$state',
     function ($scope, $stateParams, ideas, auth, $state) {
 
 
