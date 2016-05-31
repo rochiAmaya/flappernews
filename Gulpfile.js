@@ -34,9 +34,15 @@ var sources = {
     dependencies:["public/javascripts/external/dependencies-min.js"
         ],
     js: [
-        "public/javascripts/**/*.js", '!public/javascripts/external/dependencies.js', '!public/javascripts/external/dependencies-min.js'],
+        "public/javascripts/**/*.js",
+        '!public/javascripts/external/dependencies.js',
+        '!public/javascripts/external/dependencies-min.js'],
     test: {
-        frontend: ["tests/frontend/dependencies/test-dependencies-min.js",
+        dependencies:['tests/frontend/dependencies/test-dependencies.js'],
+        frontend: [
+            '!tests/frontend/dependencies/test-dependencies-min.js',
+            '!public/javascripts/external/dependencies.js',
+            '!public/javascripts/external/dependencies-min.js',
             '!tests/frontend/dependencies/test-dependencies.js',
             "public/javascripts/**/*.js",
             'tests/frontend/**/*.js'],
@@ -63,7 +69,7 @@ gulp.task("dependency:test:copy", function() {
     del([
         'tests/frontend/dependencies/*'
     ]);
-    return dependencyCopy("tests/frontend/dependencies", "test-dependencies.js", {includeDev: true});
+    return dependencyCopy("tests/frontend/dependencies", "test-dependencies.js");
 });
 
 gulp.task("dependency:external:copy",function() {
@@ -129,11 +135,12 @@ gulp.task("test:backend", function() {
 /*frontend (karma) */
 
 
-gulp.task("karma:dependency:link", ["dependency:external:copy", "dependency:test:copy"], function() {
-    var dependencies = gulp.src(sources.test.frontend);
+gulp.task("karma:dependency:link", ["dependency:test:copy"], function() {
+    var dependencies = gulp.src(sources.test.dependencies)
+    var front = gulp.src(sources.test.frontend);
 
     return gulp.src("karma.conf.js")
-        .pipe(inject(dependencies, {
+        .pipe(inject(series(dependencies, front), {
             starttag: "files: [",
             endtag: "],",
             transform: function(path, file, index, total) {
