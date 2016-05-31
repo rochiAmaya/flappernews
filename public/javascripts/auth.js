@@ -1,10 +1,9 @@
-
-
+var moduleAuth = angular.module('module.auth', ['ui.router']);
 
 
     //Manejo de auth
 
-    app.factory('auth', ['$http', '$window', function($http, $window){
+moduleAuth.factory('auth', ['$http', '$window', function ($http, $window) {
        var auth = {};
 
         auth.saveToken = function (token){
@@ -87,7 +86,7 @@
     }])
 
 
-    app.controller('AuthCtrl', ['$scope','$state','auth',
+moduleAuth.controller('AuthCtrl', ['$scope', '$state', 'auth',
         function($scope, $state, auth){
           $scope.user = {};
 

@@ -2,6 +2,9 @@ language: node_js
 node_js:
   - "0.12"
 
+cache:
+  directories:
+    - node_modules
 
 #    gulp config
 before_script:

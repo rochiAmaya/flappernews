@@ -1,4 +1,4 @@
-var app = angular.module('tipModule', ['ui.router', 'angularMoment', 'btorfs.multiselect']);
+var app = angular.module('tipModule', ['ui.router', 'angularMoment', 'btorfs.multiselect', 'module.auth', 'module.ideas']);
 
 
 app.config(['$stateProvider', '$urlRouterProvider',

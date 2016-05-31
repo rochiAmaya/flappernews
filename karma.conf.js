@@ -10,21 +10,36 @@ module.exports = function(config) {
 
         // frameworks to use
         // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-        frameworks: ['mocha', 'chai'],
+        frameworks: ['mocha', 'chai', 'sinon-chai'],
+
+        //pluggins:['browsery'],
 
 
         // list of files / patterns to load in the browser
         files: [
+
             "tests/frontend/dependencies/test-dependencies.js",
-            "public/javascripts/external/dependencies.js",
+
             "public/javascripts/angular-bootstrap-multiselect.js",
+
             "public/javascripts/angularApp.js",
+
             "public/javascripts/auth.js",
+
             "public/javascripts/b-actividades.js",
+
             "public/javascripts/ideas.js",
+
             "public/javascripts/materias.js",
+
             "public/javascripts/nav.js",
-            "public/javascripts/post.js"
+
+            "public/javascripts/post.js",
+
+            "tests/frontend/test-ideas.js",
+
+            "tests/frontend/test.controller.ideas.js"
+
             ],
 
 
