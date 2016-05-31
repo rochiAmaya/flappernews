@@ -3,6 +3,15 @@ var should = require("chai").should();
 
 describe("ideas page", function() {
 
+    /*
+    * PRECONDICION:
+    *
+    * Se necetia que en la base ya eistan tres usuarios
+    *   alumno:alumno
+    *   profesor:profesor
+    *   director:director
+    * */
+
     function logueate(username, password) {
         browser.get("http://localhost:3000/#/login");
         element(by.model("user.username")).sendKeys(username);
@@ -19,6 +28,17 @@ describe("ideas page", function() {
                 done();
             }
         });
+    }
+
+    function makeid()
+    {
+        var text = "";
+        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+        for( var i=0; i < 10; i++ )
+            text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+        return text;
     }
 
     function loguearComoAlumno() {
@@ -55,14 +75,15 @@ describe("ideas page", function() {
         loguearComoProfesor();
         browser.get("http://localhost:3000/#/ideasnew");
 
-        element(by.model("titulo")).sendKeys("idea-4");
+        var name = makeid()
+        element(by.model("titulo")).sendKeys(name);
         element(by.model("descripcion")).sendKeys("descripcion de idea uno");
         element(by.buttonText("Crear")).click();
         desloguear();
 
         loguearComoAlumno();
         browser.get("http://localhost:3000/#/ideas");
-        var parent = element(by.id('idea-4'));
+        var parent = element(by.id(name));
         parent.element(by.css('.postular-button')).click();
         parent.element(by.css('.estado')).getText().then(function (value) {
             value.should.be.equal('En Revisión');

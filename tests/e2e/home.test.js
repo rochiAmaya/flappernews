@@ -41,7 +41,6 @@ describe("home", function() {
         var botonSalir = element(by.linkText("Log Out"));
         element(by.linkText("Log Out")).isPresent().then(function(value) {
             if (value) {
-                //rowser.pause();
                 botonSalir.click().then(done);
             } else {
                 done();
