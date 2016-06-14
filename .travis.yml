@@ -13,3 +13,10 @@ before_script:
   - bower install -f
 script:
   - gulp
+
+deploy:
+  provider: heroku
+  app:
+    master: flappernews2016
+  api_key:
+    secure: $HEROKU_API_KEY
