@@ -9,7 +9,10 @@ var bodyParser = require('body-parser');
 
 
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/news');
+
+var connectionString = process.env.HEROKU_MONGODB_URI;
+mongoose.connect(connectionString || 'mongodb://localhost/news');
+
 require('./models/Tips');
 require('./models/Ideas');
 require('./models/Users');
