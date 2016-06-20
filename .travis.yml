@@ -18,6 +18,7 @@ deploy:
   provider: heroku
   app:
     master: flappernews2016
-    feature-integracion-continua: flappernews2016
+    dev: flappernews2016-stg
+    feature-integracion-continua: flappernews2016-stg
   api_key:
     secure: $HEROKU_API_KEY
