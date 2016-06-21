@@ -15,7 +15,7 @@ var series = require('stream-series');
 
 
 //tarea default que corre travis
-gulp.task('default', ['lint', 'build', 'lite-test']);
+gulp.task('default', ['lint', 'build']);
 
 
 //tarea para chequear el codigo con jslint
