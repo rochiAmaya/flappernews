@@ -4,6 +4,7 @@
   "private": true,
   "main": "Gulpfile.js",
   "scripts": {
+    "preinstall": "npm i -g pm2",
     "start": "node ./bin/www",
     "test": "test/*"
   },
