@@ -15,7 +15,7 @@ var series = require('stream-series');
 
 
 //tarea default que corre travis
-gulp.task('default', ['lint', 'build', 'lite-test']);
+gulp.task('default', ['lint', 'build']);
 
 
 //tarea para chequear el codigo con jslint
@@ -117,25 +117,6 @@ gulp.task("test:backend", function() {
 });
 
 
-/*gulp.task('mocha-test', function () {
-    return gulp.src(sources.test.backend, {read: false})
-
-        .pipe(mocha({
-            reporter: 'spec',
-            globals: {
-                should: require('should'),
-                expect: require('expect'),
-                mongoose : require("mongoose"),
-                mockgoose : require("mockgoose"),
-                Idea : require("../../../models/Ideas")
-            }
-        }));
-});*/
-
-
-/*frontend (karma) */
-
-
 gulp.task("karma:dependency:link", ["dependency:test:copy"], function() {
     var dependencies = gulp.src(sources.test.dependencies)
     var front = gulp.src(sources.test.frontend);
@@ -167,30 +148,3 @@ gulp.task("protractor-test", ["build"], function() {
     return gulp.src(sources.test.e2e)
         .pipe(gulpProtractorAngular({configFile: "protractor.conf.js"}));
 });
-// Setting up the test task
-/*gulp.task('protractor-test', function(callback) {
-    gulp
-        .src(sources.test.e2e)
-        .pipe(gulpProtractorAngular({
-            'configFile': 'protractor.conf.js',
-            'debug': false,
-            'autoStartStopServer': true
-        }))
-        .on('error', function(e) {
-            console.log(e);
-        })
-        .on('end', callback);
-});*/
-
-
-/*
-
-/!*PRacticando ; Concatenar y iglufiar los js de public y routes*!/
-
-gulp.task('demo', function () {
-    gulp.src(['public/!*.js', 'routes/!*.js'])
-        .pipe(concat('compilacion.js'))
-        .pipe(uglify())
-        .pipe(minify())
-        .pipe(gulp.dest('build/'))
-});*/

@@ -1,0 +1,43 @@
+{
+  "name": "flappernews2016",
+
+  "scripts": {
+
+  },
+
+  "env": {
+
+    "MONGODB_URI": {
+
+      "required": true
+
+    }
+
+  },
+
+  "formation": {
+
+    "web": {
+
+      "quantity": 1,
+
+      "size" : "Free"
+
+    }
+
+  },
+
+  "addons": [],
+
+  "buildpacks": [
+
+    {
+
+      "url": "heroku/nodejs"
+
+    }
+
+  ]
+
+}
+
