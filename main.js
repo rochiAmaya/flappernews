@@ -43,8 +43,6 @@ pm2.connect(function() {
 
         pm2.interact(PRIVATE_KEY, PUBLIC_KEY, MACHINE_NAME, function() {
 
-
-
             // Display logs in standard output
 
             pm2.launchBus(function(err, bus) {
