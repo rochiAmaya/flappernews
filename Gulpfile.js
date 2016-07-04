@@ -42,7 +42,7 @@ gulp.task('bump-version', function() {
 })
 
 gulp.task('commit-changes', function() {
-    const version = getPackageJsonVersion()
+    var version = getPackageJsonVersion()
     return gulp.src('.')
         .pipe(git.add())
         .pipe(git.commit('[Prerelease] Preparing to release ' + version))
@@ -55,7 +55,7 @@ gulp.task('push-changes', function(cb) {
 })
 
 gulp.task('create-new-tag', function(cb) {
-    const version = getPackageJsonVersion();
+    var version = getPackageJsonVersion();
     getBranchName(function(branch) {
         git.tag('v' + version, 'Releasing version: ' + version, function(error) {
             if (error) { return cb(error) }
