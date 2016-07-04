@@ -109,3 +109,147 @@ Y puse como ultimo paso del archivo de conf, correr la tarea default d gulp
 ```
 gulp.task('default', ['lint', 'build', 'lite-test']);
 ```
+----------------------------------------------------------
+
+# **Cambios en la Iteracion 4**
+
+##HEROKU
+Se deployo la app en heroku, en un pipeline 'flapper-pipeline ', con dos app: 
+'flapper-2016' que apunta al branch master
+'flapper-2016-stg' que apunta al branch dev
+
+ademas de otras instancias, que hablaremos luego.
+
+Para ello, se tuvo que crear una cuanta en heroku, crear cada app, aociandola a github y creando un pipeline que contenga ambas apps. Y crear un archivo: app.json, para configurar el pipeline free (tbn se puede hacer desde la web, pero es mas incomodo.)
+En el codigo, se tuvo que crear un aarchivo Procfile en el raiz, para indicarle a heroku que es una app web
+
+###HERUKU y TRAVIS
+
+Para que travis deploye correctamente cada branch en su respectiva app de heroku, se tuvo que modificar la configuracion del archivo: .travis.yml, y setearle el api_key de heroku. La cual tbn se va a seter en las variables de entorno de cada app en el servidor.
+
+###HEROKU LOGS
+
+Para poder ver que pasa en heroku mientras lo configuramos, utilizamos una herramienta de logueo, y se corre así:
+
+``` heroku logs --app flappernews2016-stg```
+
+Con la siguiente salida: 
+
+```
+2016-07-04T00:36:54.072068+00:00 app[web.1]:    | | _____ _   _ _ __ ___   ___| |_ _ __(_) ___ ___  (_) ___
+2016-07-04T00:36:54.072079+00:00 app[web.1]: 
+2016-07-04T00:36:54.072077+00:00 app[web.1]:              |___/
+2016-07-04T00:36:54.072084+00:00 app[web.1]:                    https://keymetrics.io/
+2016-07-04T00:36:54.072083+00:00 app[web.1]: 
+2016-07-04T00:36:54.072078+00:00 app[web.1]:                           Features
+2016-07-04T00:36:54.072080+00:00 app[web.1]:                    - CPU/Memory monitoring
+2016-07-04T00:36:54.072084+00:00 app[web.1]: 
+2016-07-04T00:36:54.072082+00:00 app[web.1]:                    - Real Time log display
+2016-07-04T00:36:54.072081+00:00 app[web.1]:                    - Custom value monitoring
+2016-07-04T00:36:54.072080+00:00 app[web.1]:                    - HTTP monitoring
+2016-07-04T00:36:54.072081+00:00 app[web.1]:                    - Event notification
+2016-07-04T00:36:54.072083+00:00 app[web.1]:                           Checkout
+2016-07-04T00:36:54.072085+00:00 app[web.1]: 
+2016-07-04T00:36:54.072085+00:00 app[web.1]:                         -------------
+2016-07-04T00:36:54.072086+00:00 app[web.1]: 
+2016-07-04T00:36:54.691671+00:00 app[web.1]: [Keymetrics.io] Using (Public key: rqwt3nhhtaaxx3p) (Private key: o31sxcbeo68srn7)
+2016-07-04T00:36:55.777748+00:00 heroku[web.1]: State changed from starting to up
+2016-07-04T00:36:55.674971+00:00 app[web.1]: [Keymetrics.io] [Agent updated] Agent ACTIVE - Web Access: https://app.keymetrics.io/
+2016-07-04T00:36:55.677425+00:00 app[web.1]: [PM2] Log streaming started
+2016-07-04T00:38:50.112196+00:00 heroku[slug-compiler]: Slug compilation finished
+2016-07-04T00:38:50.112187+00:00 heroku[slug-compiler]: Slug compilation started
+2016-07-04T00:38:49.922909+00:00 heroku[api]: Release v18 created by rochiamaya@gmail.com
+2016-07-04T00:38:49.922810+00:00 heroku[api]: Deploy 11b867c by rochiamaya@gmail.com
+2016-07-04T00:38:50.144729+00:00 heroku[web.1]: Restarting
+2016-07-04T00:38:50.145657+00:00 heroku[web.1]: State changed from up to starting
+2016-07-04T00:38:52.772804+00:00 heroku[web.1]: Stopping all processes with SIGTERM
+2016-07-04T00:38:54.088731+00:00 heroku[web.1]: Process exited with status 143
+2016-07-04T00:38:54.041487+00:00 heroku[web.1]: Starting process with command node ./main.js
+2016-07-04T00:38:56.909000+00:00 app[web.1]: 
+2016-07-04T00:38:56.908995+00:00 app[web.1]:                         -------------
+2016-07-04T00:38:56.909001+00:00 app[web.1]:    Looking for a complete monitoring and management tool for PM2?
+2016-07-04T00:38:56.908987+00:00 app[web.1]: 
+2016-07-04T00:38:56.909002+00:00 app[web.1]:     _                             _        _            _
+2016-07-04T00:38:56.909003+00:00 app[web.1]:    | | _____ _   _ _ __ ___   ___| |_ _ __(_) ___ ___  (_) ___
+2016-07-04T00:38:56.909003+00:00 app[web.1]:    | |/ / _ \ | | | '_ ` _ \ / _ \ __| '__| |/ __/ __| | |/ _ \
+2016-07-04T00:38:56.909004+00:00 app[web.1]:    |   <  __/ |_| | | | | | |  __/ |_| |  | | (__\__ \_| | (_) |
+2016-07-04T00:38:56.909005+00:00 app[web.1]:    |_|\_\___|\__, |_| |_| |_|\___|\__|_|  |_|\___|___(_)_|\___/
+2016-07-04T00:38:56.909005+00:00 app[web.1]:              |___/
+2016-07-04T00:38:56.909006+00:00 app[web.1]: 
+2016-07-04T00:38:56.909006+00:00 app[web.1]:                           Features
+2016-07-04T00:38:56.909008+00:00 app[web.1]:                    - Real Time Dashboard
+2016-07-04T00:38:56.909007+00:00 app[web.1]: 
+2016-07-04T00:38:56.909009+00:00 app[web.1]:                    - Event notification
+2016-07-04T00:38:56.909008+00:00 app[web.1]:                    - CPU/Memory monitoring
+2016-07-04T00:38:56.909009+00:00 app[web.1]:                    - HTTP monitoring
+2016-07-04T00:38:56.909011+00:00 app[web.1]: 
+2016-07-04T00:38:56.909010+00:00 app[web.1]:                    - Real Time log display
+2016-07-04T00:38:56.909010+00:00 app[web.1]:                    - Custom value monitoring
+2016-07-04T00:38:56.909011+00:00 app[web.1]:                           Checkout
+2016-07-04T00:38:56.909012+00:00 app[web.1]: 
+2016-07-04T00:38:56.909013+00:00 app[web.1]: 
+2016-07-04T00:38:56.909014+00:00 app[web.1]:                         -------------
+2016-07-04T00:38:56.909012+00:00 app[web.1]:                    https://keymetrics.io/
+2016-07-04T00:38:56.909014+00:00 app[web.1]: 
+2016-07-04T00:38:58.041828+00:00 app[web.1]: [Keymetrics.io] Using (Public key: rqwt3nhhtaaxx3p) (Private key: o31sxcbeo68srn7)
+2016-07-04T00:38:59.546408+00:00 app[web.1]: [Keymetrics.io] [Agent updated] Agent ACTIVE - Web Access: https://app.keymetrics.io/
+2016-07-04T00:38:59.555366+00:00 app[web.1]: [PM2] Log streaming started
+2016-07-04T00:38:59.851364+00:00 heroku[web.1]: State changed from starting to up
+2016-07-04T01:03:09.256312+00:00 heroku[slug-compiler]: Slug compilation finished
+2016-07-04T01:03:09.256307+00:00 heroku[slug-compiler]: Slug compilation started
+2016-07-04T01:03:09.070549+00:00 heroku[api]: Deploy d0db434 by rochiamaya@gmail.com
+2016-07-04T01:03:09.070653+00:00 heroku[api]: Release v19 created by rochiamaya@gmail.com
+2016-07-04T01:03:09.742387+00:00 heroku[web.1]: Restarting
+2016-07-04T01:03:12.535286+00:00 heroku[web.1]: Starting process with command node ./main.js
+2016-07-04T01:03:13.538964+00:00 heroku[web.1]: Stopping all processes with SIGTERM
+2016-07-04T01:03:15.129716+00:00 app[web.1]:                         -------------
+2016-07-04T01:03:15.129725+00:00 app[web.1]:    |   <  __/ |_| | | | | | |  __/ |_| |  | | (__\__ \_| | (_) |
+2016-07-04T01:03:15.129701+00:00 app[web.1]: 
+2016-07-04T01:03:15.129730+00:00 app[web.1]: 
+2016-07-04T01:03:15.129721+00:00 app[web.1]: 
+2016-07-04T01:03:15.129731+00:00 app[web.1]:                           Features
+2016-07-04T01:03:15.129732+00:00 app[web.1]: 
+2016-07-04T01:03:15.129722+00:00 app[web.1]:    Looking for a complete monitoring and management tool for PM2?
+2016-07-04T01:03:15.129723+00:00 app[web.1]:     _                             _        _            _
+2016-07-04T01:03:15.129732+00:00 app[web.1]:                    - Real Time Dashboard
+2016-07-04T01:03:15.129733+00:00 app[web.1]:                    - CPU/Memory monitoring
+2016-07-04T01:03:15.129733+00:00 app[web.1]:                    - HTTP monitoring
+2016-07-04T01:03:15.129734+00:00 app[web.1]:                    - Event notification
+2016-07-04T01:03:15.129734+00:00 app[web.1]:                    - Custom value monitoring
+2016-07-04T01:03:15.129724+00:00 app[web.1]:    | |/ / _ \ | | | '_ ` _ \ / _ \ __| '__| |/ __/ __| | |/ _ \
+2016-07-04T01:03:15.129724+00:00 app[web.1]:    | | _____ _   _ _ __ ___   ___| |_ _ __(_) ___ ___  (_) ___
+2016-07-04T01:03:15.129736+00:00 app[web.1]: 
+2016-07-04T01:03:15.129738+00:00 app[web.1]:                         -------------
+2016-07-04T01:03:15.129739+00:00 app[web.1]: 
+2016-07-04T01:03:15.129736+00:00 app[web.1]:                           Checkout
+2016-07-04T01:03:15.129737+00:00 app[web.1]: 
+2016-07-04T01:03:15.129737+00:00 app[web.1]:                    https://keymetrics.io/
+2016-07-04T01:03:15.129738+00:00 app[web.1]: 
+2016-07-04T01:03:15.129726+00:00 app[web.1]:    |_|\_\___|\__, |_| |_| |_|\___|\__|_|  |_|\___|___(_)_|\___/
+2016-07-04T01:03:15.129730+00:00 app[web.1]:              |___/
+2016-07-04T01:03:15.129735+00:00 app[web.1]:                    - Real Time log display
+2016-07-04T01:03:15.606503+00:00 heroku[web.1]: Process exited with status 143
+2016-07-04T01:03:15.893676+00:00 app[web.1]: [Keymetrics.io] Using (Public key: rqwt3nhhtaaxx3p) (Private key: o31sxcbeo68srn7)
+2016-07-04T01:03:16.995310+00:00 app[web.1]: [PM2] Log streaming started
+2016-07-04T01:03:16.991148+00:00 app[web.1]: [Keymetrics.io] [Agent updated] Agent ACTIVE - Web Access: https://app.keymetrics.io/
+2016-07-04T01:03:17.179601+00:00 heroku[web.1]: State changed from starting to up
+2016-07-04T01:37:22.854917+00:00 heroku[web.1]: Idling
+2016-07-04T01:37:22.855884+00:00 heroku[web.1]: State changed from up to down
+2016-07-04T01:37:24.667208+00:00 heroku[web.1]: Stopping all processes with SIGTERM
+2016-07-04T01:37:25.783458+00:00 heroku[web.1]: Process exited with status 143
+```
+
+
+###HEROKU y MONGO
+
+En cada app configurada en Heroku, se le agrego el pluggin free de Mongo, y se modifico el archivo: 'app.js'
+para que segun desde donde se levante la app, le pegue al mongo local o al que le indica la variable de entorno de heruku, 
+
+```
+var connectionString = process.env.MONGODB_URI;
+mongoose.connect(connectionString || 'mongodb://localhost/news');
+```
+
+###HEROKU REVIEW APP
+Una vez configurado todo lo anterior. Se seteo en heroku 'Enabled review app', esto significa que cuando un feature-branch realice un pull request a master, si el pull request no tiene conflictos, en heroku se creará una app temporaria con el resultado del merge, para poder pobrar la app, una vez que el pull request es aceptado, la app-temporaria desaparece. 
+
