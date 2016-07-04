@@ -253,3 +253,99 @@ mongoose.connect(connectionString || 'mongodb://localhost/news');
 ###HEROKU REVIEW APP
 Una vez configurado todo lo anterior. Se seteo en heroku 'Enabled review app', esto significa que cuando un feature-branch realice un pull request a master, si el pull request no tiene conflictos, en heroku se creará una app temporaria con el resultado del merge, para poder pobrar la app, una vez que el pull request es aceptado, la app-temporaria desaparece. 
 
+### PM2 y Keymetrics
+
+Para que pm2 funcione correctamente en travis, se agrego el script al archivo package.json
+```
+"preinstall": "npm i -g pm2"
+```
+
+Y se modifico el archivo Procfile, para decirle a Heroku que la app se levanta a atraves de pm2, y asi puede reportar a keymetrics.
+
+Para reportar en Keymetrics, solo hay que crearse una cuenta de usuario, crear un new bucket y configurar el main.js con
+las key que se generan
+
+http://docs.keymetrics.io/
+
+###Changelog
+
+###Automatización del Release con Gulp
+
+Objetivo:
+* Setear la versión a liberar en los archivos que haga falta (por ejemplo package.json).
+* Generar el changelog
+* Commitear los cambios (recuerden que modificamos archivos)
+* Pushear los cambios
+* Generar el Tag
+* Crearlo
+* Pushearlo
+* Generar un Release en GitHub.
+
+
+#### Task: bump-version
+Utiliza  bump- para el manejo de versiones, y miniminst para el pasaje de parametros
+ Parametros aceptados:
+patch: cambia a 1.2.3
+minor: cambia a 1.3.0
+major: cambia a 2.0.0
+prerelease: cambia a 1.2.1-1
+version: la que yo quiera
+
+#### Task commit-changes
+utiliza gulp-git y una funcion pauxiliar para pedirle al packege.json la version actual
+
+#### Task push-changes
+ustiliza gulp-git
+En consola te pide user y pass
+
+#### Task create-new-tag
+Crea un tag y lo pushea con el mismo pluggin
+
+### TAsk github-release
+Utiliza conventional-github-releaser
+Genera un release en GitHub, para ello es necesario generar un token, GithubProject -> settings ->tokens ->new
+y se selecciona el scope  
+```
+repo  Full control of private repositories
+ repo:status  Access commit status
+ repo_deployment  Access deployment status
+ public_repo  Access public repositories
+ ```
+-> Generar Token
+Hay que copiar el contenido, porq luego es dificil acceder de nuevo a buscar al valor del token generado
+Y lo guardamos en una variable de entorno :process.env.CONVENTIONAL_GITHUB_RELEASER_TOKEN, la cual agregamos a cada una
+de las apps de Heroku, y para levantar local, se utilizo "dotenv" pluggin, y se creo un archivo '.env'
+con el siguiente contenido : 
+
+```
+CONVENTIONAL_GITHUB_RELEASER_TOKEN=XXXXXXXXXXXXXX
+```
+#### Task release
+LLama a las anteriores task nombradas en el orden correcto
+
+###TRAVIS
+
+Finalmente, se modifico el archivo 'travis.yml' para que deploye en Heroku, solo si se trata de Tags,
+```deploy:
+    on:
+     condition: "tags = true"
+```
+Para conprobarlo, realice un commit and push, y travis mostro en consola lo siguiente:
+```
+store build cache
+0.00s
+3.32snothing changed, not updating cache
+Skipping a deployment with the heroku provider because this branch is not permitted
+Skipping a deployment with the heroku provider because a custom condition was not met
+Done. Your build exited with 0.
+```
+
+Luego realice un tag, y mustra lo siguiente:
+
+```
+Installing deploy dependencies
+Preparing deploy
+Deploying application
+...
+Done. Your build exited with 0.
+```
