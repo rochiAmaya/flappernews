@@ -12,6 +12,112 @@ var minify = require('gulp-minify');
 var del = require('del');
 var series = require('stream-series');
 
+//Release
+var minimist = require('minimist');
+
+var options = minimist(process.argv.slice(2));
+
+var conventionalChangelog = require('gulp-conventional-changelog');
+var bump = require('gulp-bump');
+var git = require('gulp-git');
+var conventionalGithubReleaser = require('conventional-github-releaser');
+var commitConvention = 'jquery';
+var runSequence = require('run-sequence');
+var gutil = require('gulp-util');
+var fs = require('fs');
+
+
+
+gulp.task('changelog', function() {
+    return gulp.src('CHANGELOG.md', { buffer: false })
+        .pipe(conventionalChangelog({ preset: commitConvention }))
+        .pipe(gulp.dest('./'))
+})
+gulp.task('bump-version', function() {
+    if (!options.type && !options.version)
+        throw new Error('You must provide either a --type major/minor/patch or --version x.x.x option')
+    return gulp.src(sources.versioned)
+        .pipe(bump(options).on('error', gutil.log))
+        .pipe(gulp.dest('./'))
+})
+
+gulp.task('commit-changes', function() {
+    var version = getPackageJsonVersion()
+    return gulp.src('.')
+        .pipe(git.add())
+        .pipe(git.commit('[Prerelease] Preparing to release ' + version))
+})
+
+gulp.task('push-changes', function(cb) {
+    getBranchName(function(branch) {
+        git.push('origin', branch, cb)
+    })
+})
+
+gulp.task('create-new-tag', function(cb) {
+    var version = getPackageJsonVersion();
+    getBranchName(function(branch) {
+        git.tag('v' + version, 'Releasing version: ' + version, function(error) {
+            if (error) { return cb(error) }
+            git.push('origin', branch, {args: '--tags'}, cb)
+        })
+    })
+})
+
+gulp.task('github-release', function(done) {
+    checkReleaseRequirements()
+    conventionalGithubReleaser({
+        type: 'oauth',
+        token: process.env.CONVENTIONAL_GITHUB_RELEASER_TOKEN // 6b736812c48ed108adfc370035d3266e31db33b8
+    }, {
+        preset: commitConvention
+    }, done)
+})
+
+gulp.task('release', function(callback) {
+    checkReleaseRequirements()
+    runSequence(
+        'bump-version',
+        'changelog',
+        'commit-changes',
+        'push-changes',
+        'create-new-tag',
+        'github-release',
+        function(error) {
+            if (error) {
+                console.log(error.message);
+            } else {
+                console.log('RELEASE FINISHED SUCCESSFULLY');
+            }
+            callback(error)
+        })
+})
+
+function checkReleaseRequirements() {
+    if (!options.type && !options.version)
+        throw new Error('You must provide either a --type major/minor/patch or --version x.x.x option')
+    if (!process.env.CONVENTIONAL_GITHUB_RELEASER_TOKEN)
+        throw new Error('In order create releases in GitHub you must have the env variable CONVENTIONAL_GITHUB_RELEASER_TOKEN set with a token')
+}
+
+// helper functions
+function getBranchName(cb) {
+    git.revParse({args: '--abbrev-ref HEAD', cwd: __dirname}, function(err, branch) {
+        if (err) throw new Error('Error while getting currrent branch name', err)
+        cb(branch)
+    })
+}
+
+function getPackageJsonVersion() { return JSON.parse(fs.readFileSync(__dirname + '/package.json', 'utf8')).version }
+
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////
+
+
 
 
 //tarea default que corre travis
@@ -48,7 +154,8 @@ var sources = {
             'tests/frontend/**/*.js'],
         backend: ["tests/backend/**/*.js"],
         e2e: ["tests/e2e/**/*.js"]
-    }
+    },
+    versioned: ['./package.json']
 };
 
 

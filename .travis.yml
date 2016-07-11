@@ -22,3 +22,5 @@ deploy:
     feature-integracion-continua: flappernews2016-stg
   api_key:
     secure: $HEROKU_API_KEY
+  on:
+    condition: "tags = true"
